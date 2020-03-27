@@ -1,9 +1,9 @@
-
 import numpy as np
 import imageio
 import sys
 import bitarray
 import math
+from pathlib import Path
 
 def get_bits(path, num_bits):
     '''
@@ -43,7 +43,7 @@ def get_chars(binary):
     print('binary of length {0} contained:\n{1}\n'.format(len(binary), text))
     return text
 
-def get_img(binary, path='./found_images/found.jpg'):
+def get_img(binary, path=Path('./found_images/found.jpg')):
     '''
     Convets a bytestring to an image and saves it to <path>.
     '''
@@ -79,8 +79,8 @@ def get_img(binary, path='./found_images/found.jpg'):
     return hidden_img
 
 if __name__ == "__main__":
-    binary = get_bits('./samples/hide_text.png', 1528)
+    binary = get_bits(Path('./samples/hide_text.png'), 1528)
     text = get_chars(binary)
 
-    binary = get_bits('./samples/hide_image.png', 1528)
+    binary = get_bits(Path('./samples/hide_image.png'), 1528)
     img = get_img(binary)
