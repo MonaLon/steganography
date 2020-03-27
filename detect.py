@@ -39,7 +39,7 @@ def get_chars(binary):
     '''
     Converts a bytestring to an ASCII string.
     '''
-    text = bitarray.bitarray(binary).tobytes().decode('utf-8')
+    text = bitarray.bitarray(binary).tobytes().decode('unicode_escape')
     print('binary of length {0} contained:\n{1}\n'.format(len(binary), text))
     return text
 
@@ -81,6 +81,9 @@ def get_img(binary, path=Path('./found_images/found.jpg')):
 if __name__ == "__main__":
     binary = get_bits(Path('./samples/hide_text.png'), 1528)
     text = get_chars(binary)
+
+    header_binary = get_bits(Path('./samples/hide_image.png'), 64)
+    text = get_chars(header_binary)
 
     binary = get_bits(Path('./samples/hide_image.png'), 1528)
     img = get_img(binary)
