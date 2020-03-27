@@ -1,5 +1,7 @@
 # steganography
 
+[Assignment description.](https://paper.dropbox.com/doc/Project-4-Steganography--Aw8SSsFc9tsPookUQl4WDDidAg-hM2MUZglNRl6enB4he7Dg)
+
 Kola Heyward-Rotimi & Camilo Ortiz.
 
 ## Installation
