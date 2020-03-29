@@ -47,8 +47,7 @@ def get_chars(binary):
 def get_dimensions(binary):
     first = binary[:32]
     second = binary[32:64]
-    dim = (util.ba2int(bitarray.bitarray(first)), util.ba2int(bitarray.bitarray(first)))
-    print( dim )
+    dim = (util.ba2int(bitarray.bitarray(first)), util.ba2int(bitarray.bitarray(second)))
     return dim
 
 
