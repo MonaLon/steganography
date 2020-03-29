@@ -2,6 +2,7 @@ import numpy as np
 import imageio
 import sys
 import bitarray
+from bitarray import util
 import math
 from pathlib import Path
 
@@ -43,16 +44,26 @@ def get_chars(binary):
     print('binary of length {0} contained:\n{1}\n'.format(len(binary), text))
     return text
 
-def get_img(binary, path=Path('./found_images/found.jpg')):
+def get_dimensions(binary):
+    first = binary[:32]
+    second = binary[32:64]
+    dim = (util.ba2int(bitarray.bitarray(first)), util.ba2int(bitarray.bitarray(first)))
+    print( dim )
+    return dim
+
+
+def get_img(binary, dimensions, path=Path('./found_images/found.jpg')):
     '''
     Convets a bytestring to an image and saves it to <path>.
+    Use dimensions to extract the image
     '''
     # Calculate number of pixels in given bytestring
-    pixels = int( math.sqrt( (len(binary) / 3) ) )
+    pixels = int( math.sqrt( (len(binary) / (3*8)) ) )
 
     # Create an output image np array of appropriate size
     w, h = pixels, pixels
     hidden_img = np.zeros((h, w, 3), dtype=np.uint8)
+
 
     # Initialize loop counters
     counter = 0
@@ -60,15 +71,18 @@ def get_img(binary, path=Path('./found_images/found.jpg')):
     c = 0
     # Loop through output image, filling out pixel values
     while r < w:
-        while c < h:
+        while c < h and counter < len(binary):
             # Index into the bytestring appropriately
             # and update output image
-            hidden_img[r, c, 0] = int(binary[counter]) & 1
-            hidden_img[r, c, 1] = int(binary[counter + 1]) & 1
-            hidden_img[r, c, 2] = int(binary[counter + 2]) & 1
 
+            # First 8 bits for the first color channel
+            hidden_img[r, c, 0] = string_to_arr(binary[counter:counter+8])
+            counter += 8
+            hidden_img[r, c, 1] = string_to_arr(binary[counter:counter+8])
+            counter += 8
+            hidden_img[r, c, 2] = string_to_arr(binary[counter:counter+8])
+            counter += 8
             # Manage inner loop counters
-            counter += 3
             c += 1
         # Manage outer loop counters
         r += 1
@@ -78,12 +92,15 @@ def get_img(binary, path=Path('./found_images/found.jpg')):
 
     return hidden_img
 
+def string_to_arr(string):
+    list = [int(char) for char in string]
+    return np.array(list)
+
 if __name__ == "__main__":
     binary = get_bits(Path('./samples/hide_text.png'), 1528)
     text = get_chars(binary)
 
-    header_binary = get_bits(Path('./samples/hide_image.png'), 64)
-    text = get_chars(header_binary)
-
     binary = get_bits(Path('./samples/hide_image.png'), 1528)
-    img = get_img(binary)
+    text = get_chars(binary)
+    dimensions = get_dimensions(binary)
+    img = get_img(binary, dimensions)
