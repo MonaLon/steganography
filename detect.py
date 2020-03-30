@@ -5,114 +5,195 @@ import bitarray
 from bitarray import util
 import math
 from pathlib import Path
+from datetime import datetime
+from PIL import Image
 
-def get_bits(path):
+
+class ImageBits(object):
     '''
-    Reads in image at <path> and adds <num_bits> least significant bits (at each
-    color channel) to a bytestring.
+    Class used to extract bits from an Image
     '''
-    # Read in image
-    img = imageio.imread(path)
+    def __init__(self, path, bit_pattern='first'):
+        '''
+        EDIT THIS SO IT CAN WORK WITH OTHER BIT ENCODINGS (evens,
+        odds, first two, first three, etc...)
+        '''
+        self.img = imageio.imread(path)
+        self.height, self.width, _ = self.img.shape
+        self.bitlength = self.height * self.width
 
-    # Calculate dimensions
-    height, width, _ = img.shape
+        # Initialize loop variables
+        bits = []
+        count = 0
+        # Loop over dimensions of image
+        for r in range(self.height):
+            for c in range(self.width):
+                # Grab the first <num_bits>
+                if count < self.bitlength:
+                   bits.append(str(self.img[r,c,0] & 1))
+                   bits.append(str(self.img[r,c,1] & 1))
+                   bits.append(str(self.img[r,c,2] & 1))
+                   count += 1
+                else:
+                    break
 
-    num_bits = height * width
+        self.bits = "".join(bits)
 
-    print('height:', height, 'width:', width, 'number of pixels:', num_bits)
+    def get_bits(self):
+        return self.bits
 
-    # Initialize loop variables
-    bits = []
-    count = 0
-    # Loop over dimensions of image
-    for r in range(height):
-        for c in range(width):
-            # Grab the first <num_bits>
-            if count < num_bits:
-               bits.append(str(img[r,c,0] & 1))
-               bits.append(str(img[r,c,1] & 1))
-               bits.append(str(img[r,c,2] & 1))
-               count += 1
-            else:
-                break
+    def width(self):
+        return self.width
 
-    print("extracted {0} bits from image.\n".format(count))
-    return "".join(bits)
+    def height(self):
+        return self.height
 
-def get_int(binary):
+    def set_bits(self, bits):
+        self.bits = bits
+
+    def get_int(self, bits=None, start=0, stop=8):
+        if bits is None:
+            bits = self.bits
+        return util.ba2int(bitarray.bitarray(bits[start:stop]))
+
+class HiddenImage(ImageBits):
     '''
-    Converts <binary> to int
-    '''
-    return util.ba2int(bitarray.bitarray(binary))
-
-def get_chars(binary, length):
-    '''
-    Converts a bytestring to an ASCII string.
-    '''
-    text = bitarray.bitarray(binary[:length]).tobytes().decode('unicode_escape')
-    print('binary of length {0} contained:\n{1}\n'.format(len(binary), text))
-    return text
-
-def get_dimensions(binary):
-    '''
-    Looks at the first 64 bits of <binary> for 2 unsigned intergers.
-    '''
-    first = binary[:32]
-    second = binary[32:64]
-    dim = (get_int(first), get_int(second))
-    return dim
-
-def get_img(binary, dimensions, path=Path('./found_images/found.jpg')):
-    '''
-    Convets a bytestring to an image and saves it to <path>.
-    Use dimensions to extract the image
+    Class used to detect and translate nested hidden images
     '''
 
-    # Create an output image np array of appropriate size
-    w, h = dimensions[0], dimensions[1]
-    hidden_img = np.zeros((h, w, 3), dtype=np.uint8)
+    def __init__(self, path='./samples/hide_image.png', dimensions=(60, 80)):
+        super().__init__(path)
+        self.dimensions = dimensions
+        self.hidden_img = None
 
-    # Initialize loop counters
-    counter = 0
-    r = 0
-    c = 0
-    pixels = 0
-    # Loop through output image, filling out pixel values
-    while r < w:
-        while c < h:
-            # Index into the bytestring appropriately
-            # and update output image
+    def __str__(self):
+        if self.hidden_img is None:
+            return "Hidden image as np.array:\n{0}".format(self.find())
+        return "Hidden image as np.array:\n{0}".format(self.hidden_img)
 
-            first_c = binary[counter:counter+8]
-            counter += 8
-            second_c = binary[counter:counter+8]
-            counter += 8
-            third_c = binary[counter:counter+8]
-            counter += 8
+    def header(self, first=0, second=32):
+        '''
+        Looks at the first 64 bits of <binary> for 2 unsigned intergers.
+        '''
+        first = self.bits[first:first+32]
+        second = self.bits[second:second+32]
+        self.dimensions = (self.get_int(first, 0, 32), self.get_int(second, 0, 32))
+        return self.dimensions
 
-            # First 8 bits for the first color channel
-            hidden_img[c, r, 0] = get_int(first_c)
-            hidden_img[c, r, 1] = get_int(second_c)
-            hidden_img[c, r, 2] = get_int(third_c)
+    def find(self, start=64, w=None, h=None, first=0, second=32):
+        '''
+        Convets a bytestring to an image and saves it to <path>.
+        Use dimensions to extract the image
+        '''
+        if self.hidden_img is not None:
+            return self.hidden_img
 
-            pixels += 1
+        # Create an output image np array of appropriate size
+        if w is None:
+            w = self.header(first, second)[0]
+        if h is None:
+            h = self.header(first, second)[1]
 
-            # Manage inner loop counters
-            c += 1
-        # Manage outer loop counters
-        r += 1
+        # Start our search after the header
+        binary = self.bits[start:]
+        hidden_img = np.zeros((h, w, 3), dtype=np.uint8)
+
+        # Initialize loop counters
+        counter = 0
+        r = 0
         c = 0
+        pixels = 0
+        # Loop through output image, filling out pixel values
+        while r < w:
+            while c < h:
+                # Index into the bytestring appropriately
+                # and update output image
 
-    print('{0} * {1} image created from bytestring of length {2} at {3}\n'.format(w, h, counter, path))
-    imageio.imwrite(path, hidden_img)
+                first_c = binary[counter:counter+8]
+                counter += 8
+                second_c = binary[counter:counter+8]
+                counter += 8
+                third_c = binary[counter:counter+8]
+                counter += 8
 
-    return hidden_img
+                # First 8 bits for the first color channel
+                hidden_img[c, r, 0] = self.get_int(first_c)
+                hidden_img[c, r, 1] = self.get_int(second_c)
+                hidden_img[c, r, 2] = self.get_int(third_c)
 
+                pixels += 1
+
+                # Manage inner loop counters
+                c += 1
+            # Manage outer loop counters
+            r += 1
+            c = 0
+
+        print('{0} * {1} image created from bytestring of length {2} at {3}\n'.format(w, h, counter, Path('./found_images/found'+ datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg')))
+        self.hidden_img = hidden_img
+        self.save()
+        return hidden_img
+
+    def rotate(self, degrees):
+        if self.hidden_img is None:
+            self.find()
+        img = Image.fromarray(self.hidden_img)
+        img = img.rotate(degrees)
+        self.hidden_img = np.array(img)
+        self.save()
+        return self.hidden_img
+
+    def save(self):
+        if self.hidden_img is None:
+            self.find()
+        imageio.imwrite(Path('./found_images/found'+ datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg'), self.hidden_img)
+        return True
+
+
+class HiddenText(ImageBits):
+    def __init__(self, path='./samples/hide_text.png', dimensions=(32, 4580)):
+        super().__init__(path)
+        self.dimensions = dimensions
+        self.hidden_text = None
+
+    def __str__(self):
+        if self.hidden_text is None:
+            return self.find()
+        return self.hidden_text
+
+    def header(self, start=0, stop=32):
+        '''
+        Converts <binary> to int
+        '''
+        return util.ba2int(bitarray.bitarray(self.bits[start:stop]))
+
+    def find(self, start=None, stop=None):
+        '''
+        Finds hidden text in its image between <start> and <stop>
+        '''
+        if self.hidden_text is not None:
+            return self.hidden_text
+        if start is None: start = self.dimensions[0]
+        if stop is None: stop = self.dimensions[1]
+
+        text = bitarray.bitarray(self.bits[start:stop]).tobytes().decode('unicode_escape')
+        print('Text found in binary of length {0}:\n{1}'.format(self.bitlength, text))
+        self.hidden_text = text
+        self.save()
+        return text
+
+    def save(self):
+        if self.hidden_text is None:
+            self.find()
+        with open (Path('./found_text/found'+ datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.txt'), "w+") as f:
+            f.write(self.hidden_text)
+        return True
 
 if __name__ == "__main__":
-    binary = get_bits(Path('./samples/hide_text.png'))
-    text = get_chars(binary, 4580)
+    # Usage
+    hi = HiddenImage()
+    print(hi)
+    hi.rotate(270)
 
-    binary = get_bits(Path('./samples/hide_image.png'))
-    dimensions = get_dimensions(binary)
-    img = get_img(binary[64:], dimensions) # No header
+    ht = HiddenText()
+    print(ht)
