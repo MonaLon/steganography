@@ -21,9 +21,9 @@ class ImageBits(object):
         odds, first two, first three, etc...)
         '''
         if bit_pattern is None:
-            bit_pattern = raw_input("Input 'first', 'second', 'third', etc.: ")
+            bit_pattern = input("Input 'first', 'second', 'third', etc.: ")
         if combine is None:
-            combine = raw_input("Input true or false for combining the bits extracted: ")
+            combine = input("Input true or false for combining the bits extracted: ")
         self.path = path
 
         self.img = imageio.imread(path)
@@ -34,21 +34,21 @@ class ImageBits(object):
             # Initialize loop variables
             bits = []
             if (bit_pattern == 'first'):
-                first(self, bits)
+                self.first(bits)
             elif (bit_pattern == 'second'):
-                second(self, bits)
+                self.second(bits)
             elif (bit_pattern == 'third'):
-                third(self, bits)
+                self.third(bits)
             elif (bit_pattern == 'fourth'):
-                fourth(self, bits)
+                self.fourth(bits)
             elif (bit_pattern == 'fifth'):
-                fifth(self, bits)
+                self.fifth(bits)
             elif (bit_pattern == 'sixth'):
-                sixth(self, bits)
+                self.sixth(bits)
             elif (bit_pattern == 'seventh'):
-                seventh(self, bits)
+                self.seventh(bits)
             elif (bit_pattern == 'eighth'):
-                eighth(self, bits)
+                self.eighth(bits)
 
             self.bits = "".join(bits)
         else:
@@ -59,7 +59,7 @@ class ImageBits(object):
 
         for r in range(self.height):
             for c in range(self.width):
-                if count < self.bitLength:
+                if count < self.bitlength:
                     bits.append(str(self.img[r,c,0] & 1))
                     bits.append(str(self.img[r,c,1] & 1))
                     bits.append(str(self.img[r,c,2] & 1))
@@ -72,7 +72,7 @@ class ImageBits(object):
 
         for r in range(self.height):
             for c in range(self.width):
-                if count < self.bitLength:
+                if count < self.bitlength:
                     bits.append(str(self.img[r,c,0] & 2))
                     bits.append(str(self.img[r,c,1] & 2))
                     bits.append(str(self.img[r,c,2] & 2))
@@ -85,7 +85,7 @@ class ImageBits(object):
 
         for r in range(self.height):
             for c in range(self.width):
-                if count < self.bitLength:
+                if count < self.bitlength:
                     bits.append(str(self.img[r,c,0] & 4))
                     bits.append(str(self.img[r,c,1] & 4))
                     bits.append(str(self.img[r,c,2] & 4))
@@ -98,7 +98,7 @@ class ImageBits(object):
 
         for r in range(self.height):
             for c in range(self.width):
-                if count < self.bitLength:
+                if count < self.bitlength:
                     bits.append(str(self.img[r,c,0] & 8))
                     bits.append(str(self.img[r,c,1] & 8))
                     bits.append(str(self.img[r,c,2] & 8))
@@ -111,7 +111,7 @@ class ImageBits(object):
 
         for r in range(self.height):
             for c in range(self.width):
-                if count < self.bitLength:
+                if count < self.bitlength:
                     bits.append(str(self.img[r,c,0] & 16))
                     bits.append(str(self.img[r,c,1] & 16))
                     bits.append(str(self.img[r,c,2] & 16))
@@ -124,7 +124,7 @@ class ImageBits(object):
 
         for r in range(self.height):
             for c in range(self.width):
-                if count < self.bitLength:
+                if count < self.bitlength:
                     bits.append(str(self.img[r,c,0] & 32))
                     bits.append(str(self.img[r,c,1] & 32))
                     bits.append(str(self.img[r,c,2] & 32))
@@ -137,7 +137,7 @@ class ImageBits(object):
 
         for r in range(self.height):
             for c in range(self.width):
-                if count < self.bitLength:
+                if count < self.bitlength:
                     bits.append(str(self.img[r,c,0] & 64))
                     bits.append(str(self.img[r,c,1] & 64))
                     bits.append(str(self.img[r,c,2] & 64))
@@ -150,7 +150,7 @@ class ImageBits(object):
 
         for r in range(self.height):
             for c in range(self.width):
-                if count < self.bitLength:
+                if count < self.bitlength:
                     bits.append(str(self.img[r,c,0] & 128))
                     bits.append(str(self.img[r,c,1] & 128))
                     bits.append(str(self.img[r,c,2] & 128))
@@ -187,7 +187,7 @@ class HiddenImage(ImageBits):
     '''
 
     def __init__(self, path='./samples/hide_image.png', dimensions=(60, 80), bits=None, bit_pattern=None, combine=None):
-        super().__init__(path, bits=bits, bit_pattern=None, combine=None)
+        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine)
         self.dimensions = dimensions
         self.hidden_img = None
         self.header()
@@ -287,7 +287,7 @@ class HiddenImage(ImageBits):
 
 class HiddenText(ImageBits):
     def __init__(self, path='./samples/hide_text.png', dimensions=(32, 4580), bits=None, bit_pattern=None, combine=None):
-        super().__init__(path, bits=bits, bit_pattern=None, combine=None)
+        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine)
         self.dimensions = dimensions
         self.hidden_text = None
         self.header()
