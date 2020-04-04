@@ -14,12 +14,16 @@ class ImageBits(object):
     '''
     Class used to extract bits from an Image
     '''
-    def __init__(self, path, bit_pattern='first', bits=None):
+    def __init__(self, path, bit_pattern, combine, bits=None):
+
         '''
         EDIT THIS SO IT CAN WORK WITH OTHER BIT ENCODINGS (evens,
         odds, first two, first three, etc...)
         '''
+        bit_pattern = raw_input("Input 'first', 'second', 'third', etc.: ")
+        combine = raw_input("Input true or false for combining the bits extracted: ")
         self.path = path
+
         self.img = imageio.imread(path)
         self.height, self.width, _ = self.img.shape
         self.bitlength = self.height * self.width
@@ -27,22 +31,131 @@ class ImageBits(object):
         if bits is None:
             # Initialize loop variables
             bits = []
-            count = 0
-            # Loop over dimensions of image
-            for r in range(self.height):
-                for c in range(self.width):
-                    # Grab the first <num_bits>
-                    if count < self.bitlength:
-                       bits.append(str(self.img[r,c,0] & 1))
-                       bits.append(str(self.img[r,c,1] & 1))
-                       bits.append(str(self.img[r,c,2] & 1))
-                       count += 1
-                    else:
-                        break
+            if (bit_pattern == 'first'):
+                first(self, bits)
+            elif (bit_pattern == 'second'):
+                second(self, bits)
+            elif (bit_pattern == 'third'):
+                third(self, bits)
+            elif (bit_pattern == 'fourth'):
+                fourth(self, bits)
+            elif (bit_pattern == 'fifth'):
+                fifth(self, bits)
+            elif (bit_pattern == 'sixth'):
+                sixth(self, bits)
+            elif (bit_pattern == 'seventh'):
+                seventh(self, bits)
+            elif (bit_pattern == 'eighth'):
+                eighth(self, bits)
 
             self.bits = "".join(bits)
-        else:
+       else:
             self.bits = bits
+        
+    def first(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 1))
+                    bits.append(str(self.img[r,c,1] & 1))
+                    bits.append(str(self.img[r,c,2] & 1))
+                    count += 1
+                else:
+                    break
+    
+    def second(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 2))
+                    bits.append(str(self.img[r,c,1] & 2))
+                    bits.append(str(self.img[r,c,2] & 2))
+                    count += 1
+                else:
+                    break
+                    
+    def third(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 4))
+                    bits.append(str(self.img[r,c,1] & 4))
+                    bits.append(str(self.img[r,c,2] & 4))
+                    count += 1
+                else:
+                    break
+
+    def fourth(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 8))
+                    bits.append(str(self.img[r,c,1] & 8))
+                    bits.append(str(self.img[r,c,2] & 8))
+                    count += 1
+                else:
+                    break
+                    
+    def fifth(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 16))
+                    bits.append(str(self.img[r,c,1] & 16))
+                    bits.append(str(self.img[r,c,2] & 16))
+                    count += 1
+                else:
+                    break
+                    
+    def sixth(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 32))
+                    bits.append(str(self.img[r,c,1] & 32))
+                    bits.append(str(self.img[r,c,2] & 32))
+                    count += 1
+                else:
+                    break
+                    
+    def seventh(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 64))
+                    bits.append(str(self.img[r,c,1] & 64))
+                    bits.append(str(self.img[r,c,2] & 64))
+                    count += 1
+                else:
+                    break
+                    
+    def eighth(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 128))
+                    bits.append(str(self.img[r,c,1] & 128))
+                    bits.append(str(self.img[r,c,2] & 128))
+                    count += 1
+                else:
+                    break
+
 
     def get_bits(self):
         return self.bits
