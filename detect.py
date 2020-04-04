@@ -48,6 +48,7 @@ class ImageBits(object):
                                 while i < 3:
                                     bits.append(fTup[i])
                                     bits.append(sTup[i])
+                                    i += 1
                             if (bit_pattern == 'third'):
                                 tTup = self.third(r, c, bits)
                                 sTup = self.second(r, c, bits)
@@ -57,6 +58,7 @@ class ImageBits(object):
                                     bits.append(fTup[i])
                                     bits.append(sTup[i])
                                     bits.append(tTup[i])
+                                    i += 1
                             if (bit_pattern == 'fourth'):
                                 foTup = self.fourth(r, c, bits)
                                 tTup = self.third(r, c, bits)
@@ -68,6 +70,7 @@ class ImageBits(object):
                                     bits.append(sTup[i])
                                     bits.append(tTup[i])
                                     bits.append(foTup[i])
+                                    i += 1
                             if (bit_pattern == 'fifth'):
                                 fiTup = self.fifth(r, c, bits)
                                 foTup = self.fourth(r, c, bits)
@@ -81,6 +84,7 @@ class ImageBits(object):
                                     bits.append(tTup[i])
                                     bits.append(foTup[i])
                                     bits.append(fiTup[i])
+                                    i += 1
                             if (bit_pattern == 'sixth'):
                                 siTup = self.sixth(r, c, bits)
                                 fiTup = self.fifth(r, c, bits)
@@ -96,6 +100,7 @@ class ImageBits(object):
                                     bits.append(foTup[i])
                                     bits.append(fiTup[i])
                                     bits.append(siTup[i])
+                                    i += 1
                             if (bit_pattern == 'seventh'):
                                 seTup = self.seventh(r, c, bits)
                                 siTup = self.sixth(r, c, bits)
@@ -113,6 +118,7 @@ class ImageBits(object):
                                     bits.append(fiTup[i])
                                     bits.append(siTup[i])
                                     bits.append(seTup[i])
+                                    i += 1
                             if (bit_pattern == 'eighth'):
                                 eiTup = self.eighth(r, c, bits)
                                 seTup = self.seventh(r, c, bits)
@@ -132,6 +138,7 @@ class ImageBits(object):
                                     bits.append(siTup[i])
                                     bits.append(seTup[i])
                                     bits.append(eiTup[i])
+                                    i += 1
                             self.bits = "".join(bits)
                         else:
                             self.bits = bits
