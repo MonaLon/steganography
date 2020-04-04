@@ -57,7 +57,7 @@ class ImageBits(object):
         self.bits = bits
 
     def save_bits(self):
-        with open (Path('./found_bits' / os.path.basename(self.path) /  'found'+ datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.txt'), "w+") as f:
+        with open (Path('./found_bits/' + os.path.basename(self.path) +  '/found' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.txt'), "w+") as f:
             f.write(self.bits)
 
     def get_int(self, bits=None, start=0, stop=8):
