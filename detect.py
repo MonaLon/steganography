@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import imageio
 import sys
@@ -13,37 +14,43 @@ class ImageBits(object):
     '''
     Class used to extract bits from an Image
     '''
-    def __init__(self, path, bit_pattern, combine):
+    def __init__(self, path, bit_pattern, combine, bits=None):
+
         '''
         EDIT THIS SO IT CAN WORK WITH OTHER BIT ENCODINGS (evens,
         odds, first two, first three, etc...)
         '''
         bit_pattern = raw_input("Input 'first', 'second', 'third', etc.: ")
         combine = raw_input("Input true or false for combining the bits extracted: ")
+        self.path = path
+
         self.img = imageio.imread(path)
         self.height, self.width, _ = self.img.shape
         self.bitlength = self.height * self.width
 
-        # Initialize loop variables
-        bits = []
-        if (bit_pattern == 'first'):
-            first(self, bits)
-        elif (bit_pattern == 'second'):
-            second(self, bits)
-        elif (bit_pattern == 'third'):
-            third(self, bits)
-        elif (bit_pattern == 'fourth'):
-            fourth(self, bits)
-        elif (bit_pattern == 'fifth'):
-            fifth(self, bits)
-        elif (bit_pattern == 'sixth'):
-            sixth(self, bits)
-        elif (bit_pattern == 'seventh'):
-            seventh(self, bits)
-        elif (bit_pattern == 'eighth'):
-            eighth(self, bits)
+        if bits is None:
+            # Initialize loop variables
+            bits = []
+            if (bit_pattern == 'first'):
+                first(self, bits)
+            elif (bit_pattern == 'second'):
+                second(self, bits)
+            elif (bit_pattern == 'third'):
+                third(self, bits)
+            elif (bit_pattern == 'fourth'):
+                fourth(self, bits)
+            elif (bit_pattern == 'fifth'):
+                fifth(self, bits)
+            elif (bit_pattern == 'sixth'):
+                sixth(self, bits)
+            elif (bit_pattern == 'seventh'):
+                seventh(self, bits)
+            elif (bit_pattern == 'eighth'):
+                eighth(self, bits)
 
-        self.bits = "".join(bits)
+            self.bits = "".join(bits)
+       else:
+            self.bits = bits
         
     def first(self, bits):
         count = 0
@@ -149,6 +156,7 @@ class ImageBits(object):
                 else:
                     break
 
+
     def get_bits(self):
         return self.bits
 
@@ -161,6 +169,10 @@ class ImageBits(object):
     def set_bits(self, bits):
         self.bits = bits
 
+    def save_bits(self):
+        with open (Path('./found_bits/' + os.path.basename(self.path) +  '/found' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.txt'), "w+") as f:
+            f.write(self.bits)
+
     def get_int(self, bits=None, start=0, stop=8):
         if bits is None:
             bits = self.bits
@@ -171,10 +183,11 @@ class HiddenImage(ImageBits):
     Class used to detect and translate nested hidden images
     '''
 
-    def __init__(self, path='./samples/hide_image.png', dimensions=(60, 80)):
-        super().__init__(path)
+    def __init__(self, path='./samples/hide_image.png', dimensions=(60, 80), bits=None):
+        super().__init__(path, bits=bits)
         self.dimensions = dimensions
         self.hidden_img = None
+        self.header()
 
     def __str__(self):
         if self.hidden_img is None:
@@ -187,7 +200,11 @@ class HiddenImage(ImageBits):
         '''
         first = self.bits[first:first+32]
         second = self.bits[second:second+32]
-        self.dimensions = (self.get_int(first, 0, 32), self.get_int(second, 0, 32))
+        self.dimensions = None
+        try:
+            self.dimensions = (self.get_int(first, 0, 32), self.get_int(second, 0, 32))
+        except:
+            "There was an error in reading in the dimensions"
         return self.dimensions
 
     def find(self, start=64, w=None, h=None, first=0, second=32):
@@ -241,7 +258,12 @@ class HiddenImage(ImageBits):
 
         print('{0} * {1} image created from bytestring of length {2} at {3}\n'.format(w, h, counter, Path('./found_images/found'+ datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg')))
         self.hidden_img = hidden_img
-        self.save()
+
+        try:
+            self.save()
+        except:
+            "This hidden image could not be turned into a imageio img"
+
         return hidden_img
 
     def rotate(self, degrees):
@@ -261,10 +283,11 @@ class HiddenImage(ImageBits):
 
 
 class HiddenText(ImageBits):
-    def __init__(self, path='./samples/hide_text.png', dimensions=(32, 4580)):
-        super().__init__(path)
+    def __init__(self, path='./samples/hide_text.png', dimensions=(32, 4580), bits=None):
+        super().__init__(path, bits=bits)
         self.dimensions = dimensions
         self.hidden_text = None
+        self.header()
 
     def __str__(self):
         if self.hidden_text is None:
@@ -275,6 +298,7 @@ class HiddenText(ImageBits):
         '''
         Converts <binary> to int
         '''
+        self.dimensions=(32, util.ba2int(bitarray.bitarray(self.bits[start:stop])))
         return util.ba2int(bitarray.bitarray(self.bits[start:stop]))
 
     def find(self, start=None, stop=None):
@@ -286,10 +310,15 @@ class HiddenText(ImageBits):
         if start is None: start = self.dimensions[0]
         if stop is None: stop = self.dimensions[1]
 
-        text = bitarray.bitarray(self.bits[start:stop]).tobytes().decode('unicode_escape')
-        print('Text found in binary of length {0}:\n{1}'.format(self.bitlength, text))
-        self.hidden_text = text
-        self.save()
+        text = None
+
+        try:
+            text = bitarray.bitarray(self.bits[start:stop]).tobytes().decode('unicode_escape')
+            print('Text found in binary of length {0}:\n{1}'.format(self.bitlength, text))
+            self.hidden_text = text
+            self.save()
+        except:
+            'Text could not be decoded'
         return text
 
     def save(self):
