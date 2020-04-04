@@ -29,30 +29,33 @@ class ImageBits(object):
         self.img = imageio.imread(path)
         self.height, self.width, _ = self.img.shape
         self.bitlength = self.height * self.width
+        
+        if (combine == 'true'):
+            '''for loop here'''
+        elif (combine == 'false'):
+            if bits is None:
+                # Initialize loop variables
+                bits = []
+                if (bit_pattern == 'first'):
+                    self.first(bits)
+                elif (bit_pattern == 'second'):
+                    self.second(bits)
+                elif (bit_pattern == 'third'):
+                    self.third(bits)
+                elif (bit_pattern == 'fourth'):
+                    self.fourth(bits)
+                elif (bit_pattern == 'fifth'):
+                    self.fifth(bits)
+                elif (bit_pattern == 'sixth'):
+                    self.sixth(bits)
+                elif (bit_pattern == 'seventh'):
+                    self.seventh(bits)
+                elif (bit_pattern == 'eighth'):
+                    self.eighth(bits)
 
-        if bits is None:
-            # Initialize loop variables
-            bits = []
-            if (bit_pattern == 'first'):
-                self.first(bits)
-            elif (bit_pattern == 'second'):
-                self.second(bits)
-            elif (bit_pattern == 'third'):
-                self.third(bits)
-            elif (bit_pattern == 'fourth'):
-                self.fourth(bits)
-            elif (bit_pattern == 'fifth'):
-                self.fifth(bits)
-            elif (bit_pattern == 'sixth'):
-                self.sixth(bits)
-            elif (bit_pattern == 'seventh'):
-                self.seventh(bits)
-            elif (bit_pattern == 'eighth'):
-                self.eighth(bits)
-
-            self.bits = "".join(bits)
-        else:
-            self.bits = bits
+                self.bits = "".join(bits)
+            else:
+                self.bits = bits
 
     def first(self, bits):
         count = 0
