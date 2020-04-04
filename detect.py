@@ -13,12 +13,13 @@ class ImageBits(object):
     '''
     Class used to extract bits from an Image
     '''
-    def __init__(self, path, bit_pattern):
+    def __init__(self, path, bit_pattern, combine):
         '''
         EDIT THIS SO IT CAN WORK WITH OTHER BIT ENCODINGS (evens,
         odds, first two, first three, etc...)
         '''
         bit_pattern = raw_input("Input 'first', 'second', 'third', etc.: ")
+        combine = raw_input("Input true or false for combining the bits extracted: ")
         self.img = imageio.imread(path)
         self.height, self.width, _ = self.img.shape
         self.bitlength = self.height * self.width
