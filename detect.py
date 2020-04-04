@@ -13,7 +13,7 @@ class ImageBits(object):
     '''
     Class used to extract bits from an Image
     '''
-    def __init__(self, path, bit_pattern='first'):
+    def __init__(self, path, bit_pattern='first', bits=None):
         '''
         EDIT THIS SO IT CAN WORK WITH OTHER BIT ENCODINGS (evens,
         odds, first two, first three, etc...)
@@ -22,22 +22,25 @@ class ImageBits(object):
         self.height, self.width, _ = self.img.shape
         self.bitlength = self.height * self.width
 
-        # Initialize loop variables
-        bits = []
-        count = 0
-        # Loop over dimensions of image
-        for r in range(self.height):
-            for c in range(self.width):
-                # Grab the first <num_bits>
-                if count < self.bitlength:
-                   bits.append(str(self.img[r,c,0] & 1))
-                   bits.append(str(self.img[r,c,1] & 1))
-                   bits.append(str(self.img[r,c,2] & 1))
-                   count += 1
-                else:
-                    break
+        if bits is None:
+            # Initialize loop variables
+            bits = []
+            count = 0
+            # Loop over dimensions of image
+            for r in range(self.height):
+                for c in range(self.width):
+                    # Grab the first <num_bits>
+                    if count < self.bitlength:
+                       bits.append(str(self.img[r,c,0] & 1))
+                       bits.append(str(self.img[r,c,1] & 1))
+                       bits.append(str(self.img[r,c,2] & 1))
+                       count += 1
+                    else:
+                        break
 
-        self.bits = "".join(bits)
+            self.bits = "".join(bits)
+        else:
+            self.bits = bits
 
     def get_bits(self):
         return self.bits

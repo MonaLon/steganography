@@ -16,8 +16,14 @@ pip3 install -r requirements.txt
 
 ## Running
 
-```
+```bash
 python3 detect.py
+```
+
+or
+
+```bash
+python3 main.py
 ```
 
 ## Questions we have to answer
