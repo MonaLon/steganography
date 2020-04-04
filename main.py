@@ -13,14 +13,14 @@ def make_found_dirs():
             os.mkidr('./found_bits/'+file)
 
 def extract_bits():
+    'Extract all bits of each image'
     base_path = Path('./images')
 
-    types_of_extractions = ['second', 'third', 'fourth', 'fifth', 'sixth', 'seventh',
-    'eighth']
+    types_of_extractions = ['first', 'second', 'third']
 
     for _, dirnames, filenames in os.walk(base_path):
             for type in types_of_extractions:
-                print('Extracting ' + type + 'bits')
+                print('Extracting ' + type + ' bits')
 
                 for image in filenames:
                     print('For ' + image)
@@ -45,16 +45,21 @@ def analyze_all():
                         text_message = text.find(stop=text_header*8)
                         if text_message is not None:
                             print(text_message)
-                            # text.save()
+                            text.save()
 
                         # Get hidden_img from HiddenImage
                         img = HiddenImage(original_path, bits=bits, bit_pattern='first', combine=False)
                         img_header = print(img.header())
-                        if img_header is not None:
-                            img_img = img.find()
+                        img_img = img.find()
+                        if img_img is not None:
+                            img.save()
 
 
 def analyze(name):
+    '''
+    For a specific image, look at all its different bit compositions to find
+    messages.
+    '''
     for _, dirnames, filenames in os.walk(Path('./found_bits/' + name)):
         for file in filenames:
             with open (Path('./found_bits/' + name + '/' + file)) as f:
@@ -83,4 +88,4 @@ def analyze(name):
 if __name__ == '__main__':
     # extract_bits()
     analyze_all()
-    analyze('Brothers_small.png')
+    # analyze('Brothers_small.png')

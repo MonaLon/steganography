@@ -73,9 +73,9 @@ class ImageBits(object):
         for r in range(self.height):
             for c in range(self.width):
                 if count < self.bitlength:
-                    bits.append(str(self.img[r,c,0] & 2))
-                    bits.append(str(self.img[r,c,1] & 2))
-                    bits.append(str(self.img[r,c,2] & 2))
+                    bits.append(str((self.img[r,c,0] & 2) >> 1))
+                    bits.append(str((self.img[r,c,1] & 2) >> 1))
+                    bits.append(str((self.img[r,c,2] & 2) >> 1))
                     count += 1
                 else:
                     break
@@ -86,9 +86,9 @@ class ImageBits(object):
         for r in range(self.height):
             for c in range(self.width):
                 if count < self.bitlength:
-                    bits.append(str(self.img[r,c,0] & 4))
-                    bits.append(str(self.img[r,c,1] & 4))
-                    bits.append(str(self.img[r,c,2] & 4))
+                    bits.append(str((self.img[r,c,0] & 4) >> 2))
+                    bits.append(str((self.img[r,c,1] & 4) >> 2))
+                    bits.append(str((self.img[r,c,2] & 4) >> 2))
                     count += 1
                 else:
                     break
@@ -99,9 +99,9 @@ class ImageBits(object):
         for r in range(self.height):
             for c in range(self.width):
                 if count < self.bitlength:
-                    bits.append(str(self.img[r,c,0] & 8))
-                    bits.append(str(self.img[r,c,1] & 8))
-                    bits.append(str(self.img[r,c,2] & 8))
+                    bits.append(str((self.img[r,c,0] & 8) >> 3))
+                    bits.append(str((self.img[r,c,1] & 8) >> 3))
+                    bits.append(str((self.img[r,c,2] & 8) >> 3))
                     count += 1
                 else:
                     break
@@ -112,9 +112,9 @@ class ImageBits(object):
         for r in range(self.height):
             for c in range(self.width):
                 if count < self.bitlength:
-                    bits.append(str(self.img[r,c,0] & 16))
-                    bits.append(str(self.img[r,c,1] & 16))
-                    bits.append(str(self.img[r,c,2] & 16))
+                    bits.append(str((self.img[r,c,0] & 16) >> 4))
+                    bits.append(str((self.img[r,c,1] & 16) >> 4))
+                    bits.append(str((self.img[r,c,2] & 16) >> 4))
                     count += 1
                 else:
                     break
@@ -125,9 +125,9 @@ class ImageBits(object):
         for r in range(self.height):
             for c in range(self.width):
                 if count < self.bitlength:
-                    bits.append(str(self.img[r,c,0] & 32))
-                    bits.append(str(self.img[r,c,1] & 32))
-                    bits.append(str(self.img[r,c,2] & 32))
+                    bits.append(str((self.img[r,c,0] & 32) >> 5))
+                    bits.append(str((self.img[r,c,1] & 32) >> 5))
+                    bits.append(str((self.img[r,c,2] & 32) >> 5))
                     count += 1
                 else:
                     break
@@ -138,9 +138,9 @@ class ImageBits(object):
         for r in range(self.height):
             for c in range(self.width):
                 if count < self.bitlength:
-                    bits.append(str(self.img[r,c,0] & 64))
-                    bits.append(str(self.img[r,c,1] & 64))
-                    bits.append(str(self.img[r,c,2] & 64))
+                    bits.append(str((self.img[r,c,0] & 64) >> 6))
+                    bits.append(str((self.img[r,c,1] & 64) >> 6))
+                    bits.append(str((self.img[r,c,2] & 64) >> 6))
                     count += 1
                 else:
                     break
@@ -151,9 +151,9 @@ class ImageBits(object):
         for r in range(self.height):
             for c in range(self.width):
                 if count < self.bitlength:
-                    bits.append(str(self.img[r,c,0] & 128))
-                    bits.append(str(self.img[r,c,1] & 128))
-                    bits.append(str(self.img[r,c,2] & 128))
+                    bits.append((str(self.img[r,c,0] & 128) >> 7))
+                    bits.append(str((self.img[r,c,1] & 128) >> 7))
+                    bits.append(str((self.img[r,c,2] & 128) >> 7))
                     count += 1
                 else:
                     break
@@ -226,43 +226,48 @@ class HiddenImage(ImageBits):
 
         # Start our search after the header
         binary = self.bits[start:]
-        hidden_img = np.zeros((h, w, 3), dtype=np.uint8)
+        try:
+            hidden_img = np.zeros((h, w, 3), dtype=np.uint8)
 
-        # Initialize loop counters
-        counter = 0
-        r = 0
-        c = 0
-        pixels = 0
-        # Loop through output image, filling out pixel values
-        while r < w:
-            while c < h:
-                # Index into the bytestring appropriately
-                # and update output image
 
-                first_c = binary[counter:counter+8]
-                counter += 8
-                second_c = binary[counter:counter+8]
-                counter += 8
-                third_c = binary[counter:counter+8]
-                counter += 8
-
-                # First 8 bits for the first color channel
-                hidden_img[c, r, 0] = self.get_int(first_c)
-                hidden_img[c, r, 1] = self.get_int(second_c)
-                hidden_img[c, r, 2] = self.get_int(third_c)
-
-                pixels += 1
-
-                # Manage inner loop counters
-                c += 1
-            # Manage outer loop counters
-            r += 1
+            # Initialize loop counters
+            counter = 0
+            r = 0
             c = 0
+            pixels = 0
+            # Loop through output image, filling out pixel values
+            while r < w:
+                while c < h:
+                    # Index into the bytestring appropriately
+                    # and update output image
 
-        print('{0} * {1} image created from bytestring of length {2} at {3}\n'.format(w, h, counter, Path('./found_images/found'+ datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg')))
-        self.hidden_img = hidden_img
+                    first_c = binary[counter:counter+8]
+                    counter += 8
+                    second_c = binary[counter:counter+8]
+                    counter += 8
+                    third_c = binary[counter:counter+8]
+                    counter += 8
 
-        return hidden_img
+                    # First 8 bits for the first color channel
+                    hidden_img[c, r, 0] = self.get_int(first_c)
+                    hidden_img[c, r, 1] = self.get_int(second_c)
+                    hidden_img[c, r, 2] = self.get_int(third_c)
+
+                    pixels += 1
+
+                    # Manage inner loop counters
+                    c += 1
+                # Manage outer loop counters
+                r += 1
+                c = 0
+
+            print('{0} * {1} image created from bytestring of length {2} at {3}\n'.format(w, h, counter, Path('./found_images/found'+ datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg')))
+            self.hidden_img = hidden_img
+
+            return hidden_img
+            
+        except:
+            return None
 
     def rotate(self, degrees):
         if self.hidden_img is None:
@@ -296,8 +301,11 @@ class HiddenText(ImageBits):
         '''
         Converts <binary> to int
         '''
-        self.dimensions=(32, util.ba2int(bitarray.bitarray(self.bits[start:stop])))
-        return util.ba2int(bitarray.bitarray(self.bits[start:stop]))
+        try:
+            self.dimensions=(32, util.ba2int(bitarray.bitarray(self.bits[start:stop])))
+        except:
+            'Error converting to Int'
+        return self.dimensions[1]
 
     def find(self, start=None, stop=None):
         '''
