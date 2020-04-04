@@ -13,31 +13,65 @@ class ImageBits(object):
     '''
     Class used to extract bits from an Image
     '''
-    def __init__(self, path, bit_pattern='first'):
+    def __init__(self, path, bit_pattern):
         '''
         EDIT THIS SO IT CAN WORK WITH OTHER BIT ENCODINGS (evens,
         odds, first two, first three, etc...)
         '''
+        bit_pattern = raw_input("Input 'first', 'second', or 'third': ")
         self.img = imageio.imread(path)
         self.height, self.width, _ = self.img.shape
         self.bitlength = self.height * self.width
 
         # Initialize loop variables
         bits = []
-        count = 0
-        # Loop over dimensions of image
-        for r in range(self.height):
-            for c in range(self.width):
-                # Grab the first <num_bits>
-                if count < self.bitlength:
-                   bits.append(str(self.img[r,c,0] & 1))
-                   bits.append(str(self.img[r,c,1] & 1))
-                   bits.append(str(self.img[r,c,2] & 1))
-                   count += 1
-                else:
-                    break
+        if (bit_pattern == 'first'):
+            first(self, bits)
+        elif (bit_pattern == 'second'):
+            second(self, bits)
+        elif (bit_pattern == 'third'):
+            third(self, bits)
 
         self.bits = "".join(bits)
+        
+    def first(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 1))
+                    bits.append(str(self.img[r,c,1] & 1))
+                    bits.append(str(self.img[r,c,2] & 1))
+                    count += 1
+                else:
+                    break
+    
+    def second(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 10))
+                    bits.append(str(self.img[r,c,1] & 10))
+                    bits.append(str(self.img[r,c,2] & 10))
+                    count += 1
+                else:
+                    break
+                    
+    def third(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 100))
+                    bits.append(str(self.img[r,c,1] & 100))
+                    bits.append(str(self.img[r,c,2] & 100))
+                    count += 1
+                else:
+                    break
 
     def get_bits(self):
         return self.bits
