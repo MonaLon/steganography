@@ -42,8 +42,10 @@ def analyze_all():
                         text = HiddenText(original_path, bits=bits, bit_pattern='first', combine=False)
                         text_header = text.header()
                         print(text_header)
-                        text_message = text.find()
-                        print(text_message)
+                        text_message = text.find(stop=text_header*8)
+                        if text_message is not None:
+                            print(text_message)
+                            # text.save()
 
                         # Get hidden_img from HiddenImage
                         img = HiddenImage(original_path, bits=bits, bit_pattern='first', combine=False)
@@ -67,7 +69,7 @@ def analyze(name):
                 print(text_header)
 
                 text_message = text.find(stop=900)
-                text.save()
+                # text.save()
                 print(text_message)
 
                 # Get hidden_img from HiddenImage
@@ -80,5 +82,5 @@ def analyze(name):
 
 if __name__ == '__main__':
     # extract_bits()
-    # analyze_all()
+    analyze_all()
     analyze('Brothers_small.png')
