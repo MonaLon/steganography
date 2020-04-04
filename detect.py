@@ -18,7 +18,7 @@ class ImageBits(object):
         EDIT THIS SO IT CAN WORK WITH OTHER BIT ENCODINGS (evens,
         odds, first two, first three, etc...)
         '''
-        bit_pattern = raw_input("Input 'first', 'second', or 'third': ")
+        bit_pattern = raw_input("Input 'first', 'second', 'third', etc.: ")
         self.img = imageio.imread(path)
         self.height, self.width, _ = self.img.shape
         self.bitlength = self.height * self.width
@@ -31,6 +31,16 @@ class ImageBits(object):
             second(self, bits)
         elif (bit_pattern == 'third'):
             third(self, bits)
+        elif (bit_pattern == 'fourth'):
+            fourth(self, bits)
+        elif (bit_pattern == 'fifth'):
+            fifth(self, bits)
+        elif (bit_pattern == 'sixth'):
+            sixth(self, bits)
+        elif (bit_pattern == 'seventh'):
+            seventh(self, bits)
+        elif (bit_pattern == 'eighth'):
+            eighth(self, bits)
 
         self.bits = "".join(bits)
         
@@ -53,9 +63,9 @@ class ImageBits(object):
         for r in range(self.height):
             for c in range(self.width):
                 if count < self.bitLength:
-                    bits.append(str(self.img[r,c,0] & 10))
-                    bits.append(str(self.img[r,c,1] & 10))
-                    bits.append(str(self.img[r,c,2] & 10))
+                    bits.append(str(self.img[r,c,0] & 2))
+                    bits.append(str(self.img[r,c,1] & 2))
+                    bits.append(str(self.img[r,c,2] & 2))
                     count += 1
                 else:
                     break
@@ -66,9 +76,74 @@ class ImageBits(object):
         for r in range(self.height):
             for c in range(self.width):
                 if count < self.bitLength:
-                    bits.append(str(self.img[r,c,0] & 100))
-                    bits.append(str(self.img[r,c,1] & 100))
-                    bits.append(str(self.img[r,c,2] & 100))
+                    bits.append(str(self.img[r,c,0] & 4))
+                    bits.append(str(self.img[r,c,1] & 4))
+                    bits.append(str(self.img[r,c,2] & 4))
+                    count += 1
+                else:
+                    break
+
+    def fourth(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 8))
+                    bits.append(str(self.img[r,c,1] & 8))
+                    bits.append(str(self.img[r,c,2] & 8))
+                    count += 1
+                else:
+                    break
+                    
+    def fifth(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 16))
+                    bits.append(str(self.img[r,c,1] & 16))
+                    bits.append(str(self.img[r,c,2] & 16))
+                    count += 1
+                else:
+                    break
+                    
+    def sixth(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 32))
+                    bits.append(str(self.img[r,c,1] & 32))
+                    bits.append(str(self.img[r,c,2] & 32))
+                    count += 1
+                else:
+                    break
+                    
+    def seventh(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 64))
+                    bits.append(str(self.img[r,c,1] & 64))
+                    bits.append(str(self.img[r,c,2] & 64))
+                    count += 1
+                else:
+                    break
+                    
+    def eighth(self, bits):
+        count = 0
+        
+        for r in range(self.height):
+            for c in range(self.width):
+                if count < self.bitLength:
+                    bits.append(str(self.img[r,c,0] & 128))
+                    bits.append(str(self.img[r,c,1] & 128))
+                    bits.append(str(self.img[r,c,2] & 128))
                     count += 1
                 else:
                     break
