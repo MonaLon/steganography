@@ -38,7 +38,8 @@ class ImageBits(object):
                     if count < self.bitLength:
                         if bits is None:
                             if (bit_pattern == 'first'):
-                                self.first(bits)
+                                fTup = self.first(r, c, bits)
+                                bits.append(fTup)
                             if (bit_pattern == 'second'):
                                 self.second(bits)
                             if (bit_pattern == 'third'):
@@ -87,18 +88,9 @@ class ImageBits(object):
                             self.bits = bits
                         count += 1
 
-    def first(self, bits):
-        count = 0
-
-        for r in range(self.height):
-            for c in range(self.width):
-                if count < self.bitlength:
-                    bits.append(str(self.img[r,c,0] & 1))
-                    bits.append(str(self.img[r,c,1] & 1))
-                    bits.append(str(self.img[r,c,2] & 1))
-                    count += 1
-                else:
-                    break
+    def first(self, r, c, bits):
+        firstTup = (str(self.img[r,c,0] & 1), str(self.img[r,c,1] & 1), str(self.img[r,c,2] & 1))
+        return firstTup
 
     def second(self, bits):
         count = 0
