@@ -213,7 +213,6 @@ class ImageBits(object):
         self.bits = bits
 
     def save_bits(self, type):
-
         with open (Path('./found_bits/' + os.path.basename(self.path) +  '/' + type + 'bits' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.txt'), "w+") as f:
             f.write(self.bits)
 
@@ -228,6 +227,19 @@ class ImageBits(object):
         if bits is None:
             bits = self.bits
         return util.ba2int(bitarray.bitarray(bits[start:stop]))
+
+    def get_all_ints(self, bits=None):
+        # Dictionary int : location
+        self.all_ints = {}
+
+        counter = 0
+
+        while counter + 32 < self.bitlength:
+            number = util.ba2int(bitarray.bitarray(bits[counter:counter+32]))
+            self.all_ints.update({number : counter})
+            counter += 32
+
+        return self.all_ints
 
 class HiddenImage(ImageBits):
     '''
