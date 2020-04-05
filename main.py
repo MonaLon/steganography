@@ -66,16 +66,16 @@ def analyze(name):
                 original_path = Path('./images/' + name)
                 bits = f.read()
 
-                print("Analyzing " + name)
+                print("Analyzing", name, file)
 
                 # Get text
                 text = HiddenText(original_path, bits=bits, bit_pattern='first', combine=False)
                 text_header = text.header()
                 print(text_header)
 
-                text_message = text.find(stop=900)
-                # text.save()
-                print(text_message)
+                text_message = text.find(stop=215)
+                # if text_message is not None: text.save()
+                print("\n")
 
                 # Get hidden_img from HiddenImage
 
@@ -87,5 +87,5 @@ def analyze(name):
 
 if __name__ == '__main__':
     # extract_bits()
-    analyze_all()
-    # analyze('Brothers_small.png')
+    # analyze_all()
+    analyze('WideDogIsWide.png')
