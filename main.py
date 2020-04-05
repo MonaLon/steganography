@@ -78,14 +78,13 @@ def analyze(name):
                 print("\n")
 
                 # Get hidden_img from HiddenImage
+                img = HiddenImage(original_path, bits=bits, bit_pattern='first', combine=False)
+                img_header = print(img.header(32, 64))
 
-                # img = HiddenImage(original_path, bits=bits, bit_pattern='first', combine=False)
-                # img_header = print(img.header(32, 64))
-                #
-                # if img_header is not None:
-                #     img_img = img.find()
+                if img_header is not None:
+                    img_img = img.find()
 
 if __name__ == '__main__':
     # extract_bits()
-    # analyze_all()
-    analyze('WideDogIsWide.png')
+    analyze_all()
+    # analyze('TheGrassIsGreener.png')

@@ -27,6 +27,7 @@ class ImageBits(object):
         self.path = path
 
         self.img = imageio.imread(path)
+        self.img = self.rotate(180)
         self.height, self.width, _ = self.img.shape
         self.bitlength = self.height * self.width
 
@@ -176,6 +177,13 @@ class ImageBits(object):
         with open (Path('./found_bits/' + os.path.basename(self.path) +  '/' + type + 'bits' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.txt'), "w+") as f:
             f.write(self.bits)
 
+    def rotate(self, degrees):
+        print("Rotating", degrees, 'degrees')
+        img = Image.fromarray(self.img)
+        img = img.rotate(degrees)
+        self.img = np.array(img)
+        return self.img
+
     def get_int(self, bits=None, start=0, stop=8):
         if bits is None:
             bits = self.bits
@@ -265,7 +273,7 @@ class HiddenImage(ImageBits):
             self.hidden_img = hidden_img
 
             return hidden_img
-            
+
         except:
             return None
 
