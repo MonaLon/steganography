@@ -54,6 +54,12 @@ John.
 
 10. Do I really need anything more than spellcheck in any circumstance?
 
+>"The next sentence is true.
+The previous sentence is false.
+The previous two sentences are absolute nonsense.", Brothers_small.png
+
+Potentially False
+
 11. Why haven’t we unlocked all the mysteries of the ocean?
 
 12. Did Young Scott leave any red herrings?
