@@ -37,6 +37,11 @@ python3 main.py
 
 4. I have memories of having a talking shed. What was its name?
 
+> "John (a shed) said that "A ship in harbor is safe  but that is not what ships are built for."
+But what, I ask, are habors built for?", PuppyLeash.png (peep the typo!)
+
+John.
+
 5. Could anyone have seen the bitcoin boom coming?
 
 6. For as long as I can remember, I’ve been nervous when I’m near a merry-go-round if I have a bottle of water with me. Why is that?
@@ -53,4 +58,19 @@ python3 main.py
 
 12. Did Young Scott leave any red herrings?
 
+> "This is a red herring", WideDogIsWide.png
+
+Yes.
+
 13. What’s at the center of the tootsie pop?
+
+## Additional messages
+
+> "Slow is smooth, smooth is fast.", PupFriends.png
+
+> "If I ever write a final exam for a security class, the answers are going to be:
+Ehh, I'm not going to write them down. This information probably wouldn't interest anyone.", FriendlyPupper.png
+
+>"The next sentence is true.
+The previous sentence is false.
+The previous two sentences are absolute nonsense.", Brothers_small.png
