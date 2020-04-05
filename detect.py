@@ -177,31 +177,31 @@ class ImageBits(object):
         return firstTup
 
     def second(self, r, c, bits):
-        secondTup = (str(self.img[r,c,0] & 2), str(self.img[r,c,1] & 2), str(self.img[r,c,2] & 2))
+        secondTup = (str(self.img[r,c,0] & 2) >> 1), str(self.img[r,c,1] & 2) >> 1), str(self.img[r,c,2] & 2) >> 1))
         return secondTup
 
     def third(self, r, c, bits):
-        thirdTup = (str(self.img[r,c,0] & 4), str(self.img[r,c,1] & 4), str(self.img[r,c,2] & 4))
+        thirdTup = (str(self.img[r,c,0] & 4) >> 2), str(self.img[r,c,1] & 4) >> 2), str(self.img[r,c,2] & 4) >> 2))
         return thirdTup
 
     def fourth(self, bits):
-        fourthTup = (str(self.img[r,c,0] & 8), str(self.img[r,c,1] & 8), str(self.img[r,c,2] & 8))
+        fourthTup = (str(self.img[r,c,0] & 8) >> 3), str(self.img[r,c,1] & 8) >> 3), str(self.img[r,c,2] & 8) >> 3))
         return fourthTup
 
     def fifth(self, bits):
-        fifthTup = (str(self.img[r,c,0] & 16), str(self.img[r,c,1] & 16), str(self.img[r,c,2] & 16))
+        fifthTup = (str(self.img[r,c,0] & 16) >> 4), str(self.img[r,c,1] & 16) >> 4), str(self.img[r,c,2] & 16) >> 4))
         return fifthTup
 
     def sixth(self, bits):
-        sixthTup = (str(self.img[r,c,0] & 32), str(self.img[r,c,1] & 32), str(self.img[r,c,2] & 32))
+        sixthTup = (str(self.img[r,c,0] & 32) >> 5), str(self.img[r,c,1] & 32) >> 5), str(self.img[r,c,2] & 32) >> 5))
         return sixthTup
 
     def seventh(self, bits):
-        seventhTup = (str(self.img[r,c,0] & 64), str(self.img[r,c,1] & 64), str(self.img[r,c,2] & 64))
+        seventhTup = (str(self.img[r,c,0] & 64) >> 6), str(self.img[r,c,1] & 64) >> 6), str(self.img[r,c,2] & 64) >> 6))
         return seventhTup
 
     def eighth(self, bits):
-        eighthTup = (str(self.img[r,c,0] & 128), str(self.img[r,c,1] & 128), str(self.img[r,c,2] & 128))
+        eighthTup = (str(self.img[r,c,0] & 128) >> 7), str(self.img[r,c,1] & 128) >> 7), str(self.img[r,c,2] & 128) >> 7))
         return eighthTup
 
     def get_bits(self):
