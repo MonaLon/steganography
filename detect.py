@@ -334,8 +334,7 @@ class HiddenImage(ImageBits):
     def stats(self):
         if self.hidden_img is None:
             self.find()
-        img = self.hidden_img
-        imgTwo = img
+        imgTwo = self.hidden_img
         binary = self.bits[start:]
         for r in range(self.height):
             for c in range(self.width):
@@ -352,7 +351,10 @@ class HiddenImage(ImageBits):
                     imgTwo[r, c, 2] = 255
                 elif binaryCheck[2] == 0:
                     imgTwo[r, c, 2] = 0
-         imgTwo.save()
+         img = self.hidden_img
+         self.hidden_img = imgTwo
+         self.save()
+         self.hidden_img = img
          return True
         
 
