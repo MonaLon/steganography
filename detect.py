@@ -379,12 +379,12 @@ class HiddenText(ImageBits):
             return self.find()
         return self.hidden_text
 
-    def header(self, start=0, stop=32):
+    def header(self, start=0):
         '''
         Converts <binary> to int
         '''
         try:
-            self.dimensions=(32, util.ba2int(bitarray.bitarray(self.bits[start:stop])))
+            self.dimensions=(32, util.ba2int(bitarray.bitarray(self.bits[start:start+32])))
         except:
             'Error converting to Int'
         return self.dimensions[1]

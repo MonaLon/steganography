@@ -74,3 +74,5 @@ Ehh, I'm not going to write them down. This information probably wouldn't intere
 >"The next sentence is true.
 The previous sentence is false.
 The previous two sentences are absolute nonsense.", Brothers_small.png
+
+>"TEeUUDWUtDuEttFbQ"2 !#"7wTgfEp10r"QTVfT", WinkyFace.png (secondbits)
