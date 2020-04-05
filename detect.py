@@ -334,17 +334,26 @@ class HiddenImage(ImageBits):
     def stats(self):
         if self.hidden_img is None:
             self.find()
-        img = Image.fromarray(self.hidden_img)
+        img = self.hidden_img
         imgTwo = img
         binary = self.bits[start:]
         for r in range(self.height):
             for c in range(self.width):
-                binaryCheck = str(img[r, c, 0] & 128) >> 7
-                if binaryCheck == 1:
+                binaryCheck = first(r, c, bits)
+                if binaryCheck[0] == 1:
                     imgTwo[r, c, 0] = 255
-                elif binaryCheck == 0:
+                elif binaryCheck[0] == 0:
                     imgTwo[r, c, 0] = 0
-                '''do this for the other two channels'''
+                if binaryCheck[1] == 1:
+                    imgTwo[r, c, 1] = 255
+                elif binaryCheck[1] == 0:
+                    imgTwo[r, c, 1] = 0
+                if binaryCheck[2] == 1:
+                    imgTwo[r, c, 2] = 255
+                elif binaryCheck[2] == 0:
+                    imgTwo[r, c, 2] = 0
+         imgTwo.save()
+         return True
         
 
     def save(self):
