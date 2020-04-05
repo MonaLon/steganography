@@ -16,10 +16,6 @@ class ImageBits(object):
     '''
     def __init__(self, path, bit_pattern=None, combine=None, bits=None, rotation=0):
 
-        '''
-        EDIT THIS SO IT CAN WORK WITH OTHER BIT ENCODINGS (evens,
-        odds, first two, first three, etc...)
-        '''
         if bit_pattern is None:
             bit_pattern = input("Input 'first', 'second', 'third', etc.: ")
         if combine is None:
