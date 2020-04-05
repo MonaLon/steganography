@@ -14,7 +14,7 @@ class ImageBits(object):
     '''
     Class used to extract bits from an Image
     '''
-    def __init__(self, path, bit_pattern=None, combine=None, bits=None):
+    def __init__(self, path, bit_pattern=None, combine=None, bits=None, rotation=0):
 
         '''
         EDIT THIS SO IT CAN WORK WITH OTHER BIT ENCODINGS (evens,
@@ -27,11 +27,11 @@ class ImageBits(object):
         self.path = path
 
         self.img = imageio.imread(path)
-        self.img = self.rotate(180)
+        self.img = self.rotate(rotation)
         self.height, self.width, _ = self.img.shape
-        self.bitlength = self.height * self.width        
+        self.bitlength = self.height * self.width
         count = 0
-        
+
         if (combine == 'true'):
             for r in range(self.height):
                 for c in range(self.width):
@@ -199,7 +199,7 @@ class ImageBits(object):
     def seventh(self, bits):
         seventhTup = (str(self.img[r,c,0] & 64) >> 6), str(self.img[r,c,1] & 64) >> 6), str(self.img[r,c,2] & 64) >> 6))
         return seventhTup
-      
+
     def eighth(self, bits):
         eighthTup = (str(self.img[r,c,0] & 128) >> 7), str(self.img[r,c,1] & 128) >> 7), str(self.img[r,c,2] & 128) >> 7))
         return eighthTup
@@ -238,8 +238,8 @@ class HiddenImage(ImageBits):
     Class used to detect and translate nested hidden images
     '''
 
-    def __init__(self, path='./samples/hide_image.png', dimensions=(60, 80), bits=None, bit_pattern=None, combine=None):
-        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine)
+    def __init__(self, path='./samples/hide_image.png', dimensions=(60, 80), bits=None, bit_pattern=None, combine=None, rotation=0):
+        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=0)
         self.dimensions = dimensions
         self.hidden_img = None
         self.header()
@@ -338,8 +338,8 @@ class HiddenImage(ImageBits):
 
 
 class HiddenText(ImageBits):
-    def __init__(self, path='./samples/hide_text.png', dimensions=(32, 4580), bits=None, bit_pattern=None, combine=None):
-        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine)
+    def __init__(self, path='./samples/hide_text.png', dimensions=(32, 4580), bits=None, bit_pattern=None, combine=None, rotation=0):
+        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=0)
         self.dimensions = dimensions
         self.hidden_text = None
         self.header()

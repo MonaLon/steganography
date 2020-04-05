@@ -16,16 +16,15 @@ def extract_bits():
     'Extract all bits of each image'
     base_path = Path('./images')
 
-    types_of_extractions = ['first', 'second', 'third']
-
     for _, dirnames, filenames in os.walk(base_path):
-            for type in types_of_extractions:
-                print('Extracting ' + type + ' bits')
+        for type in ['first']:
+            print('Extracting ' + type + ' bits')
 
-                for image in filenames:
+            for image in filenames:
+                for rotation in [90, 270]:
                     print('For ' + image)
                     # Get text from HiddenText
-                    text = HiddenText(base_path / image, bit_pattern=type, combine=False)
+                    text = HiddenText(base_path / image, bit_pattern=type, combine=False, rotation=rotation)
                     text.save_bits(type)
 
 def analyze_all():
