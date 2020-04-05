@@ -197,23 +197,23 @@ class ImageBits(object):
         thirdTup = (str((self.img[r,c,0] & 4) >> 2), str((self.img[r,c,1] & 4) >> 2), str((self.img[r,c,2] & 4) >> 2))
         return thirdTup
 
-    def fourth(self, bits):
+    def fourth(self,  r, c, bits):
         fourthTup = (str((self.img[r,c,0] & 8) >> 3), str((self.img[r,c,1] & 8) >> 3), str((self.img[r,c,2] & 8) >> 3))
         return fourthTup
 
-    def fifth(self, bits):
+    def fifth(self, r, c, bits):
         fifthTup = (str((self.img[r,c,0] & 16) >> 4), str((self.img[r,c,1] & 16) >> 4), str((self.img[r,c,2] & 16) >> 4))
         return fifthTup
 
-    def sixth(self, bits):
+    def sixth(self, r, c, bits):
         sixthTup = (str((self.img[r,c,0] & 32) >> 5), str((self.img[r,c,1] & 32) >> 5), str((self.img[r,c,2] & 32) >> 5))
         return sixthTup
 
-    def seventh(self, bits):
+    def seventh(self, r, c, bits):
         seventhTup = (str((self.img[r,c,0] & 64) >> 6), str((self.img[r,c,1] & 64) >> 6), str((self.img[r,c,2] & 64) >> 6))
         return seventhTup
 
-    def eighth(self, bits):
+    def eighth(self, r, c, bits):
         eighthTup = (str((self.img[r,c,0] & 128) >> 7), str((self.img[r,c,1] & 128) >> 7), str((self.img[r,c,2] & 128) >> 7))
         return eighthTup
 
