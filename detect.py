@@ -23,7 +23,8 @@ class ImageBits(object):
         self.path = path
 
         self.img = imageio.imread(path)
-        self.img = self.rotate(rotation)
+        if rotation != 0:
+            self.img = self.rotate(rotation)
         self.height, self.width, _ = self.img.shape
         self.bitLength = self.height * self.width
         count = 0
@@ -31,6 +32,9 @@ class ImageBits(object):
         if bits is not None:
             self.bits = bits
             return
+
+        # Initialize loop variables
+        bits = []
 
         if (combine == 'true'):
             for r in range(self.height):
@@ -138,14 +142,12 @@ class ImageBits(object):
                                 bits.append(seTup[i])
                                 bits.append(eiTup[i])
                                 i += 1
-                    count += 1
+                        count += 1
             self.bits = "".join(bits)
         else:
             for r in range(self.height):
                 for c in range(self.width):
                     if count < self.bitLength:
-                        # Initialize loop variables
-                        bits = []
                         if (bit_pattern == 'first'):
                             fTup = self.first(r, c, bits)
                             for var in fTup:
@@ -243,14 +245,15 @@ class ImageBits(object):
             bits = self.bits
         return util.ba2int(bitarray.bitarray(bits[start:stop]))
 
-    def get_all_ints(self, bits=None):
+    def get_all_ints(self):
+
         # Dictionary int : location
         self.all_ints = {}
 
         counter = 0
 
         while counter + 32 < self.bitLength:
-            number = util.ba2int(bitarray.bitarray(bits[counter:counter+32]))
+            number = util.ba2int(bitarray.bitarray(self.bits[counter:counter+32]))
             self.all_ints.update({number : counter})
             counter += 32
 
@@ -356,7 +359,11 @@ class HiddenImage(ImageBits):
     def save(self):
         if self.hidden_img is None:
             self.find()
-        imageio.imwrite(Path('./found_images/'+ os.path.basename(self.path) + '/' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg'), self.hidden_img)
+        try:
+            imageio.imwrite(Path('./found_images/'+ os.path.basename(self.path) + '/' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg'), self.hidden_img)
+        except:
+            print("Error. Saving image was not possible.")
+            return False
         return True
 
 
@@ -404,8 +411,12 @@ class HiddenText(ImageBits):
     def save(self):
         if self.hidden_text is None:
             self.find()
-        with open (Path('./found_text/'+ os.path.basename(self.path) + '/' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.txt'), "w+") as f:
-            f.write(self.hidden_text)
+        try:
+            with open (Path('./found_text/'+ os.path.basename(self.path) + '/' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.txt'), "w+") as f:
+                f.write(self.hidden_text)
+        except:
+            print("Error. Saving text was not possible.")
+            return False
         return True
 
 if __name__ == "__main__":
