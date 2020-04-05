@@ -28,8 +28,7 @@ class ImageBits(object):
 
         self.img = imageio.imread(path)
         self.height, self.width, _ = self.img.shape
-        self.bitlength = self.height * self.width
-        
+        self.bitlength = self.height * self.width        
         count = 0
         
         if (combine == 'true'):
@@ -199,7 +198,7 @@ class ImageBits(object):
     def seventh(self, bits):
         seventhTup = (str(self.img[r,c,0] & 64) >> 6), str(self.img[r,c,1] & 64) >> 6), str(self.img[r,c,2] & 64) >> 6))
         return seventhTup
-
+      
     def eighth(self, bits):
         eighthTup = (str(self.img[r,c,0] & 128) >> 7), str(self.img[r,c,1] & 128) >> 7), str(self.img[r,c,2] & 128) >> 7))
         return eighthTup
@@ -271,48 +270,48 @@ class HiddenImage(ImageBits):
 
         # Start our search after the header
         binary = self.bits[start:]
-        hidden_img = np.zeros((h, w, 3), dtype=np.uint8)
-
-        # Initialize loop counters
-        counter = 0
-        r = 0
-        c = 0
-        pixels = 0
-        # Loop through output image, filling out pixel values
-        while r < w:
-            while c < h:
-                # Index into the bytestring appropriately
-                # and update output image
-
-                first_c = binary[counter:counter+8]
-                counter += 8
-                second_c = binary[counter:counter+8]
-                counter += 8
-                third_c = binary[counter:counter+8]
-                counter += 8
-
-                # First 8 bits for the first color channel
-                hidden_img[c, r, 0] = self.get_int(first_c)
-                hidden_img[c, r, 1] = self.get_int(second_c)
-                hidden_img[c, r, 2] = self.get_int(third_c)
-
-                pixels += 1
-
-                # Manage inner loop counters
-                c += 1
-            # Manage outer loop counters
-            r += 1
-            c = 0
-
-        print('{0} * {1} image created from bytestring of length {2} at {3}\n'.format(w, h, counter, Path('./found_images/found'+ datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg')))
-        self.hidden_img = hidden_img
-
         try:
-            self.save()
-        except:
-            "This hidden image could not be turned into a imageio img"
+            hidden_img = np.zeros((h, w, 3), dtype=np.uint8)
 
-        return hidden_img
+
+            # Initialize loop counters
+            counter = 0
+            r = 0
+            c = 0
+            pixels = 0
+            # Loop through output image, filling out pixel values
+            while r < w:
+                while c < h:
+                    # Index into the bytestring appropriately
+                    # and update output image
+
+                    first_c = binary[counter:counter+8]
+                    counter += 8
+                    second_c = binary[counter:counter+8]
+                    counter += 8
+                    third_c = binary[counter:counter+8]
+                    counter += 8
+
+                    # First 8 bits for the first color channel
+                    hidden_img[c, r, 0] = self.get_int(first_c)
+                    hidden_img[c, r, 1] = self.get_int(second_c)
+                    hidden_img[c, r, 2] = self.get_int(third_c)
+
+                    pixels += 1
+
+                    # Manage inner loop counters
+                    c += 1
+                # Manage outer loop counters
+                r += 1
+                c = 0
+
+            print('{0} * {1} image created from bytestring of length {2} at {3}\n'.format(w, h, counter, Path('./found_images/found'+ datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg')))
+            self.hidden_img = hidden_img
+
+            return hidden_img
+            
+        except:
+            return None
 
     def rotate(self, degrees):
         if self.hidden_img is None:
@@ -326,7 +325,7 @@ class HiddenImage(ImageBits):
     def save(self):
         if self.hidden_img is None:
             self.find()
-        imageio.imwrite(Path('./found_images/found'+ datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg'), self.hidden_img)
+        imageio.imwrite(Path('./found_images/'+ os.path.basename(self.path) + '/' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg'), self.hidden_img)
         return True
 
 
@@ -346,8 +345,11 @@ class HiddenText(ImageBits):
         '''
         Converts <binary> to int
         '''
-        self.dimensions=(32, util.ba2int(bitarray.bitarray(self.bits[start:stop])))
-        return util.ba2int(bitarray.bitarray(self.bits[start:stop]))
+        try:
+            self.dimensions=(32, util.ba2int(bitarray.bitarray(self.bits[start:stop])))
+        except:
+            'Error converting to Int'
+        return self.dimensions[1]
 
     def find(self, start=None, stop=None):
         '''
@@ -361,10 +363,9 @@ class HiddenText(ImageBits):
         text = None
 
         try:
-            text = bitarray.bitarray(self.bits[start:stop]).tobytes().decode('unicode_escape')
+            text = bitarray.bitarray(self.bits[start:stop]).tobytes().decode('utf-8')
             print('Text found in binary of length {0}:\n{1}'.format(self.bitlength, text))
             self.hidden_text = text
-            self.save()
         except:
             'Text could not be decoded'
         return text
@@ -372,7 +373,7 @@ class HiddenText(ImageBits):
     def save(self):
         if self.hidden_text is None:
             self.find()
-        with open (Path('./found_text/found'+ datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.txt'), "w+") as f:
+        with open (Path('./found_text/'+ os.path.basename(self.path) + '/' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.txt'), "w+") as f:
             f.write(self.hidden_text)
         return True
 
