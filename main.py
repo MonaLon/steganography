@@ -8,24 +8,42 @@ def make_found_dirs():
     'Make found_images and found_text directories'
     for _, dirnames, filenames in os.walk('./images'):
         for file in filenames:
-            os.mkdir('./found_text/'+file)
-            os.mkdir('./found_images/'+file)
-            os.mkidr('./found_bits/'+file)
+            # os.makedirs('./found_text/'+file)
+            # os.makedirs('./found_images/'+file)
+            os.makedirs('./found_bits/'+file)
 
 def extract_bits():
     'Extract all bits of each image'
     base_path = Path('./images')
 
     for _, dirnames, filenames in os.walk(base_path):
-        for type in ['first']:
-            print('Extracting ' + type + ' bits')
-            for image in filenames:
+        for image in filenames:
+            # From Left to Right and Right to Left
+            for reversed in [True, False]:
+                # No rotation
                 for rotation in [0]:
+                    # Get a bit for each channel
                     for channel in range(3):
-                        print('For ' + image)
+                        print('For', image, 'extracting', 'reversed', reversed, 'rotation', rotation, 'channel', channel)
                         # Get text from HiddenText
-                        text = HiddenText(base_path / image, bit_pattern=type, combine=False, rotation=rotation, channel=channel)
-                        text.save_bits(bit_pattern=type, rotation=rotation, combine=False, channel=channel)
+                        text = HiddenText(base_path / image, bit_pattern='channel', combine=False, rotation=rotation, channel=channel, reversed=reversed)
+                        text.save_bits(bit_pattern='channel', rotation=rotation, combine=False, channel=channel, reversed=reversed)
+                    # RGB or BGR?
+                    for swap in [True, False]:
+                        # Combine all bits up including the fourth one
+                        for type in ['fourth']:
+                            print('For', image, 'extracting', 'reversed', reversed, 'rotation', rotation, 'swap', swap, 'type', type)
+                            # Get text from HiddenText (combining all 4th bits)
+                            text = HiddenText(base_path / image, bit_pattern=type, combine='true', rotation=rotation, channel=None, reversed=reversed, swap=swap)
+                            text.save_bits(bit_pattern=type, rotation=rotation, combine='true', reversed=reversed, swap=swap)
+
+                        # Extract only the first bit. Then extract only the second bit.
+                        for type in ['first', 'second']:
+                            print('For', image, 'extracting', 'reversed', reversed, 'rotation', rotation, 'swap', swap, 'type', type)
+                            # Get text from HiddenText (combining all 4th bits)
+                            text = HiddenText(base_path / image, bit_pattern=type, combine=False, rotation=rotation, channel=None, reversed=reversed, swap=swap)
+                            text.save_bits(bit_pattern=type, rotation=rotation, combine=False, reversed=reversed, swap=swap)
+
 
 def analyze_all():
     base = Path('./found_bits')
@@ -36,7 +54,7 @@ def analyze_all():
                     with open (base / directory / file) as f:
                         original_path = Path('./images/' + directory)
                         bits = f.read()
-                        for location in [0, 1, 2 1000, 1001, 1002]:
+                        for location in [0, 1, 2, 1000, 1001, 1002]:
                             print("Analyzing", directory, file, "at location", location)
                             # Get text
                             text = HiddenText(original_path, bits=bits, bit_pattern='first', combine=False)
@@ -98,6 +116,7 @@ def analyze(name):
                     img.save()
 
 if __name__ == '__main__':
-    # extract_bits()
-    analyze_all()
+    # make_found_dirs()
+    extract_bits()
+    # analyze_all()
     # analyze('WinkyFace.png')
