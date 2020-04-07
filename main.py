@@ -60,7 +60,7 @@ def analyze_all():
                                     except:
                                         continue
 
-                                    if is_english:
+                                    if is_english and len(word) > 4:
                                         # If it is english, save the message
                                         text.save()
                                         break
