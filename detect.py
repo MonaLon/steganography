@@ -14,7 +14,7 @@ class ImageBits(object):
     '''
     Class used to extract bits from an Image
     '''
-    def __init__(self, path, bit_pattern=None, combine=None, bits=None, rotation=0):
+    def __init__(self, path, bit_pattern=None, combine=None, bits=None, rotation=0, channel=None):
 
         if bit_pattern is None:
             bit_pattern = input("Input 'first', 'second', 'third', etc.: ")
@@ -36,7 +36,7 @@ class ImageBits(object):
         # Initialize loop variables
         bits = []
 
-        if (combine == 'true'):
+        if (combine == 'true') && channel is None:
             for r in range(self.height):
                 for c in range(self.width):
                     if count < self.bitLength:
@@ -143,6 +143,22 @@ class ImageBits(object):
                                 bits.append(eiTup[i])
                                 i += 1
                         count += 1
+            self.bits = "".join(bits)
+        elif channel is not None:
+            for r in range(self.height):
+                for c in range(self.width):
+                    fTup = self.first(r, c)
+                    sTup = self.second(r, c)
+                    tTup = self.third(r, c)
+                    foTup = self.fourth(r, c)
+                    fiTup = self.fifth(r, c)
+                    siTup = self.sixth(r, c)
+                    seTup = self.seventh(r, c)
+                    eiTup = self.eighth(r, c)
+
+                    for tup in [fTup, sTup, tTup, foTup, fiTup, siTup, seTup, eiTup]:
+                        bits.append(tup[channel])
+
             self.bits = "".join(bits)
         else:
             for r in range(self.height):
