@@ -39,6 +39,10 @@ python3 main.py
 
 1. The other day I decided to clean my bedsheets for the first time in a long time. I found this bizarre implement under my pillow. Why is it there?
 
+> "One who sleeps with a naginata is a fool every night but one.", TripleThreat.png
+
+For safety.
+
 2. Who’s Scruffy?
 
 3. Should I read the Tao Te Ching, or the Art of War?

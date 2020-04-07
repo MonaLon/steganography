@@ -20,12 +20,12 @@ def extract_bits():
         for type in ['first']:
             print('Extracting ' + type + ' bits')
             for image in filenames:
-                if "found" in image:
-                    for rotation in [0]:
+                for rotation in [0]:
+                    for channel in range(3):
                         print('For ' + image)
                         # Get text from HiddenText
-                        text = HiddenText(base_path / image, bit_pattern=type, combine=False, rotation=rotation)
-                        text.save_bits(type)
+                        text = HiddenText(base_path / image, bit_pattern=type, combine=False, rotation=rotation, channel=channel)
+                        text.save_bits(bit_pattern=type, rotation=rotation, combine=False, channel=channel)
 
 def analyze_all():
     base = Path('./found_bits')
@@ -36,26 +36,29 @@ def analyze_all():
                     with open (base / directory / file) as f:
                         original_path = Path('./images/' + directory)
                         bits = f.read()
-                        print("Analyzing " + directory)
-                        # Get text
-                        text = HiddenText(original_path, bits=bits, bit_pattern='first', combine=False)
-                        text_header = text.header()
-                        print(text_header)
-                        text_message = text.find(stop=100)
+                        for location in [0, 1, 2 1000, 1001, 1002]:
+                            print("Analyzing", directory, file, "at location", location)
+                            # Get text
+                            text = HiddenText(original_path, bits=bits, bit_pattern='first', combine=False)
+                            text_header = text.header(location)
+                            if text_header is not None and text_header < 10000:
+                                text_message = text.find(start=location+32, stop=len(bits))
 
-                        if text_message is not None:
-                            print(text_message)
-                            # text.save()
+                                if text_message is not None and len(text_message.strip()) > 5:
+                                    print(text_message)
+                                    text.save()
 
-                        # Get hidden_img from HiddenImage
-                        img = HiddenImage(original_path, bits=bits, bit_pattern='first', combine=False)
-                        img_img = img.find(first=1001, second=1033, start=1065)
-                        if img_img is not None:
-                            print(img_img)
-                            img.save()
+                            # Get hidden_img from HiddenImage
+                            img = HiddenImage(original_path, bits=bits, bit_pattern='first', combine=False)
+                            img_header = img.header(location, location+32)
 
-                        print('\n')
+                            if img_header is not None and img_header[0] < 10000 and 0 not in img_header:
+                                img_img = img.find(start=location+64)
+                                if img_img is not None:
+                                    print(img_img)
+                                    img.save()
 
+                            print('\n')
 
 def analyze(name):
     '''
@@ -76,7 +79,7 @@ def analyze(name):
                 # text = HiddenText(original_path, bits=bits, bit_pattern='first', combine=False)
                 # text_header = text.header()
                 # print(text_header)
-                
+
                 # text_message = text.find(stop=367)
                 # if text_message is not None:
                 #     print(text_message)
@@ -96,5 +99,5 @@ def analyze(name):
 
 if __name__ == '__main__':
     # extract_bits()
-    # analyze_all()
-    analyze('WinkyFace.png')
+    analyze_all()
+    # analyze('WinkyFace.png')
