@@ -117,6 +117,6 @@ def analyze(name):
 
 if __name__ == '__main__':
     # make_found_dirs()
-    extract_bits()
-    # analyze_all()
+    # extract_bits()
+    analyze_all()
     # analyze('WinkyFace.png')
