@@ -309,7 +309,6 @@ class HiddenImage(ImageBits):
         try:
             hidden_img = np.zeros((h, w, 3), dtype=np.uint8)
 
-
             # Initialize loop counters
             counter = 0
             r = 0
@@ -410,7 +409,7 @@ class HiddenText(ImageBits):
                 text.append(char)
             except:
                 print('Error decoding text')
-                break
+                continue
             counter += 8
 
         text = "".join(text)
