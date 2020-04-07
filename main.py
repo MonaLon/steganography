@@ -49,11 +49,10 @@ def analyze_all():
 
                         # Get hidden_img from HiddenImage
                         img = HiddenImage(original_path, bits=bits, bit_pattern='first', combine=False)
-                        img_header = print(img.header())
-                        img_img = img.find()
+                        img_img = img.find(first=1001, second=1033, start=1065)
                         if img_img is not None:
                             print(img_img)
-                            # img.save()
+                            img.save()
                         print('\n')
 
 
@@ -93,5 +92,5 @@ def analyze(name):
 
 if __name__ == '__main__':
     # extract_bits()
-    # analyze_all()
-    analyze('WinkyFace.png')
+    analyze_all()
+    # analyze('WinkyFace.png')
