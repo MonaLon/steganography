@@ -2,6 +2,8 @@
 
 [Assignment description.](https://paper.dropbox.com/doc/Project-4-Steganography--Aw8SSsFc9tsPookUQl4WDDidAg-hM2MUZglNRl6enB4he7Dg)
 
+[Assignment questions.](https://paper.dropbox.com/doc/Project-4-Steganography-Phase-2--Axn4rCCvFXbLNoyfZCASz1bIAg-X8VY8z2BqAsTgpxgxbu80)
+
 Kola Heyward-Rotimi & Camilo Ortiz.
 
 ## Installation
@@ -12,6 +14,12 @@ Install dependencies.
 
 ```bash
 pip3 install -r requirements.txt
+```
+
+You also will need the C library called Enchant. Run:
+
+```bash
+brew install enchant
 ```
 
 ## Running
@@ -30,6 +38,10 @@ python3 main.py
 
 
 1. The other day I decided to clean my bedsheets for the first time in a long time. I found this bizarre implement under my pillow. Why is it there?
+
+> "One who sleeps with a naginata is a fool every night but one.", TripleThreat.png
+
+For safety.
 
 2. Who’s Scruffy?
 
@@ -54,6 +66,12 @@ John.
 
 10. Do I really need anything more than spellcheck in any circumstance?
 
+>"The next sentence is true.
+The previous sentence is false.
+The previous two sentences are absolute nonsense.", Brothers_small.png
+
+Potentially False
+
 11. Why haven’t we unlocked all the mysteries of the ocean?
 
 12. Did Young Scott leave any red herrings?
@@ -74,3 +92,5 @@ Ehh, I'm not going to write them down. This information probably wouldn't intere
 >"The next sentence is true.
 The previous sentence is false.
 The previous two sentences are absolute nonsense.", Brothers_small.png
+
+>"TEeUUDWUtDuEttFbQ"2 !#"7wTgfEp10r"QTVfT", WinkyFace.png (secondbits)
