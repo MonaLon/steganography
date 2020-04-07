@@ -41,21 +41,21 @@ class ImageBits(object):
                 for c in range(self.width):
                     if count < self.bitLength:
                         if (bit_pattern == 'first'):
-                            fTup = self.first(r, c, bits)
+                            fTup = self.first(r, c)
                             for var in fTup:
                                 bits.append(var)
                         if (bit_pattern == 'second'):
-                            sTup = self.second(r, c, bits)
-                            fTup = self.first(r, c, bits)
+                            sTup = self.second(r, c)
+                            fTup = self.first(r, c)
                             i = 0
                             while i < 3:
                                 bits.append(fTup[i])
                                 bits.append(sTup[i])
                                 i += 1
                         if (bit_pattern == 'third'):
-                            tTup = self.third(r, c, bits)
-                            sTup = self.second(r, c, bits)
-                            fTup = self.first(r, c, bits)
+                            tTup = self.third(r, c)
+                            sTup = self.second(r, c)
+                            fTup = self.first(r, c)
                             i = 0
                             while i < 3:
                                 bits.append(fTup[i])
@@ -63,10 +63,10 @@ class ImageBits(object):
                                 bits.append(tTup[i])
                                 i += 1
                         if (bit_pattern == 'fourth'):
-                            foTup = self.fourth(r, c, bits)
-                            tTup = self.third(r, c, bits)
-                            sTup = self.second(r, c, bits)
-                            fTup = self.first(r, c, bits)
+                            foTup = self.fourth(r, c)
+                            tTup = self.third(r, c)
+                            sTup = self.second(r, c)
+                            fTup = self.first(r, c)
                             i = 0
                             while i < 3:
                                 bits.append(fTup[i])
@@ -75,11 +75,11 @@ class ImageBits(object):
                                 bits.append(foTup[i])
                                 i += 1
                         if (bit_pattern == 'fifth'):
-                            fiTup = self.fifth(r, c, bits)
-                            foTup = self.fourth(r, c, bits)
-                            tTup = self.third(r, c, bits)
-                            sTup = self.second(r, c, bits)
-                            fTup = self.first(r, c, bits)
+                            fiTup = self.fifth(r, c)
+                            foTup = self.fourth(r, c)
+                            tTup = self.third(r, c)
+                            sTup = self.second(r, c)
+                            fTup = self.first(r, c)
                             i = 0
                             while i < 3:
                                 bits.append(fTup[i])
@@ -89,12 +89,12 @@ class ImageBits(object):
                                 bits.append(fiTup[i])
                                 i += 1
                         if (bit_pattern == 'sixth'):
-                            siTup = self.sixth(r, c, bits)
-                            fiTup = self.fifth(r, c, bits)
-                            foTup = self.fourth(r, c, bits)
-                            tTup = self.third(r, c, bits)
-                            sTup = self.second(r, c, bits)
-                            fTup = self.first(r, c, bits)
+                            siTup = self.sixth(r, c)
+                            fiTup = self.fifth(r, c)
+                            foTup = self.fourth(r, c)
+                            tTup = self.third(r, c)
+                            sTup = self.second(r, c)
+                            fTup = self.first(r, c)
                             i = 0
                             while i < 3:
                                 bits.append(fTup[i])
@@ -105,13 +105,13 @@ class ImageBits(object):
                                 bits.append(siTup[i])
                                 i += 1
                         if (bit_pattern == 'seventh'):
-                            seTup = self.seventh(r, c, bits)
-                            siTup = self.sixth(r, c, bits)
-                            fiTup = self.fifth(r, c, bits)
-                            foTup = self.fourth(r, c, bits)
-                            tTup = self.third(r, c, bits)
-                            sTup = self.second(r, c, bits)
-                            fTup = self.first(r, c, bits)
+                            seTup = self.seventh(r, c)
+                            siTup = self.sixth(r, c)
+                            fiTup = self.fifth(r, c)
+                            foTup = self.fourth(r, c)
+                            tTup = self.third(r, c)
+                            sTup = self.second(r, c)
+                            fTup = self.first(r, c)
                             i = 0
                             while i < 3:
                                 bits.append(fTup[i])
@@ -123,14 +123,14 @@ class ImageBits(object):
                                 bits.append(seTup[i])
                                 i += 1
                         if (bit_pattern == 'eighth'):
-                            eiTup = self.eighth(r, c, bits)
-                            seTup = self.seventh(r, c, bits)
-                            siTup = self.sixth(r, c, bits)
-                            fiTup = self.fifth(r, c, bits)
-                            foTup = self.fourth(r, c, bits)
-                            tTup = self.third(r, c, bits)
-                            sTup = self.second(r, c, bits)
-                            fTup = self.first(r, c, bits)
+                            eiTup = self.eighth(r, c)
+                            seTup = self.seventh(r, c)
+                            siTup = self.sixth(r, c)
+                            fiTup = self.fifth(r, c)
+                            foTup = self.fourth(r, c)
+                            tTup = self.third(r, c)
+                            sTup = self.second(r, c)
+                            fTup = self.first(r, c)
                             i = 0
                             while i < 3:
                                 bits.append(fTup[i])
@@ -149,35 +149,35 @@ class ImageBits(object):
                 for c in range(self.width):
                     if count < self.bitLength:
                         if (bit_pattern == 'first'):
-                            fTup = self.first(r, c, bits)
+                            fTup = self.first(r, c)
                             for var in fTup:
                                 bits.append(var)
                         elif (bit_pattern == 'second'):
-                            sTup = self.second(r, c, bits)
+                            sTup = self.second(r, c)
                             for var in sTup:
                                 bits.append(var)
                         elif (bit_pattern == 'third'):
-                            tTup = self.third(r, c, bits)
+                            tTup = self.third(r, c)
                             for var in tTup:
                                 bits.append(var)
                         elif (bit_pattern == 'fourth'):
-                            foTup = self.fourth(r, c, bits)
+                            foTup = self.fourth(r, c)
                             for var in foTup:
                                 bits.append(var)
                         elif (bit_pattern == 'fifth'):
-                            fiTup = self.fifth(r, c, bits)
+                            fiTup = self.fifth(r, c)
                             for var in fiTup:
                                 bits.append(var)
                         elif (bit_pattern == 'sixth'):
-                            siTup = self.sixth(r, c, bits)
+                            siTup = self.sixth(r, c)
                             for var in siTup:
                                 bits.append(var)
                         elif (bit_pattern == 'seventh'):
-                            seTup = self.seventh(r, c, bits)
+                            seTup = self.seventh(r, c)
                             for var in seTup:
                                 bits.append(var)
                         elif (bit_pattern == 'eighth'):
-                            eiTup = self.eighth(r, c, bits)
+                            eiTup = self.eighth(r, c)
                             for var in eiTup:
                                 bits.append(var)
                         count += 1
@@ -185,35 +185,35 @@ class ImageBits(object):
             self.bits = "".join(bits)
 
 
-    def first(self, r, c, bits):
+    def first(self, r, c):
         firstTup = (str(self.img[r,c,0] & 1), str(self.img[r,c,1] & 1), str(self.img[r,c,2] & 1))
         return firstTup
 
-    def second(self, r, c, bits):
+    def second(self, r, c):
         secondTup = (str((self.img[r,c,0] & 2) >> 1), str((self.img[r,c,1] & 2) >> 1), str((self.img[r,c,2] & 2) >> 1))
         return secondTup
 
-    def third(self, r, c, bits):
+    def third(self, r, c):
         thirdTup = (str((self.img[r,c,0] & 4) >> 2), str((self.img[r,c,1] & 4) >> 2), str((self.img[r,c,2] & 4) >> 2))
         return thirdTup
 
-    def fourth(self,  r, c, bits):
+    def fourth(self,  r, c):
         fourthTup = (str((self.img[r,c,0] & 8) >> 3), str((self.img[r,c,1] & 8) >> 3), str((self.img[r,c,2] & 8) >> 3))
         return fourthTup
 
-    def fifth(self, r, c, bits):
+    def fifth(self, r, c):
         fifthTup = (str((self.img[r,c,0] & 16) >> 4), str((self.img[r,c,1] & 16) >> 4), str((self.img[r,c,2] & 16) >> 4))
         return fifthTup
 
-    def sixth(self, r, c, bits):
+    def sixth(self, r, c):
         sixthTup = (str((self.img[r,c,0] & 32) >> 5), str((self.img[r,c,1] & 32) >> 5), str((self.img[r,c,2] & 32) >> 5))
         return sixthTup
 
-    def seventh(self, r, c, bits):
+    def seventh(self, r, c):
         seventhTup = (str((self.img[r,c,0] & 64) >> 6), str((self.img[r,c,1] & 64) >> 6), str((self.img[r,c,2] & 64) >> 6))
         return seventhTup
 
-    def eighth(self, r, c, bits):
+    def eighth(self, r, c):
         eighthTup = (str((self.img[r,c,0] & 128) >> 7), str((self.img[r,c,1] & 128) >> 7), str((self.img[r,c,2] & 128) >> 7))
         return eighthTup
 
@@ -251,10 +251,12 @@ class ImageBits(object):
         self.all_ints = {}
 
         counter = 0
-
         while counter + 32 < self.bitLength:
-            number = util.ba2int(bitarray.bitarray(self.bits[counter:counter+32]))
-            self.all_ints.update({number : counter})
+            try:
+                number = util.ba2int(bitarray.bitarray(self.bits[counter:counter+32]))
+                self.all_ints.update({counter+32 : number})
+            except:
+                pass
             counter += 32
 
         return self.all_ints
@@ -393,19 +395,27 @@ class HiddenText(ImageBits):
         '''
         Finds hidden text in its image between <start> and <stop>
         '''
-        if self.hidden_text is not None:
-            return self.hidden_text
         if start is None: start = self.dimensions[0]
         if stop is None: stop = self.dimensions[1]
 
         text = None
 
-        try:
-            text = bitarray.bitarray(self.bits[start:stop]).tobytes().decode('utf-8')
-            print('Text found in binary of length {0}:\n{1}'.format(self.bitLength, text))
-            self.hidden_text = text
-        except:
-            'Text could not be decoded'
+        counter = start
+
+        text = []
+
+        while counter + 8 < stop and counter+8 < len(self.bits):
+            try:
+                char = bitarray.bitarray(self.bits[counter:counter+8]).tobytes().decode('ascii')
+                text.append(char)
+            except:
+                print('Error decoding text')
+                break
+            counter += 8
+
+        text = "".join(text)
+        self.hidden_text = text
+
         return text
 
     def save(self):

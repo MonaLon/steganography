@@ -2,6 +2,8 @@
 
 [Assignment description.](https://paper.dropbox.com/doc/Project-4-Steganography--Aw8SSsFc9tsPookUQl4WDDidAg-hM2MUZglNRl6enB4he7Dg)
 
+[Assignment questions.](https://paper.dropbox.com/doc/Project-4-Steganography-Phase-2--Axn4rCCvFXbLNoyfZCASz1bIAg-X8VY8z2BqAsTgpxgxbu80)
+
 Kola Heyward-Rotimi & Camilo Ortiz.
 
 ## Installation
@@ -12,6 +14,12 @@ Install dependencies.
 
 ```bash
 pip3 install -r requirements.txt
+```
+
+You also will need the C library called Enchant. Run:
+
+```bash
+brew install enchant
 ```
 
 ## Running
