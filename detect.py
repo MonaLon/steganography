@@ -14,7 +14,7 @@ class ImageBits(object):
     '''
     Class used to extract bits from an Image
     '''
-    def __init__(self, path, bit_pattern=None, combine=None, bits=None, rotation=0):
+    def __init__(self, path, bit_pattern=None, combine=None, bits=None, rotation=0, channel=None):
 
         if bit_pattern is None:
             bit_pattern = input("Input 'first', 'second', 'third', etc.: ")
@@ -36,7 +36,7 @@ class ImageBits(object):
         # Initialize loop variables
         bits = []
 
-        if (combine == 'true'):
+        if (combine == 'true') and channel is None:
             for r in range(self.height):
                 for c in range(self.width):
                     if count < self.bitLength:
@@ -144,6 +144,22 @@ class ImageBits(object):
                                 i += 1
                         count += 1
             self.bits = "".join(bits)
+        elif channel is not None:
+            for r in range(self.height):
+                for c in range(self.width):
+                    fTup = self.first(r, c)
+                    sTup = self.second(r, c)
+                    tTup = self.third(r, c)
+                    foTup = self.fourth(r, c)
+                    fiTup = self.fifth(r, c)
+                    siTup = self.sixth(r, c)
+                    seTup = self.seventh(r, c)
+                    eiTup = self.eighth(r, c)
+
+                    for tup in [fTup, sTup, tTup, foTup, fiTup, siTup, seTup, eiTup]:
+                        bits.append(tup[channel])
+
+            self.bits = "".join(bits)
         else:
             for r in range(self.height):
                 for c in range(self.width):
@@ -229,8 +245,8 @@ class ImageBits(object):
     def set_bits(self, bits):
         self.bits = bits
 
-    def save_bits(self, type):
-        with open (Path('./found_bits/' + os.path.basename(self.path) +  '/' + type + 'bits' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.txt'), "w+") as f:
+    def save_bits(self,bit_pattern='first', rotation=0, combine=False, channel='all'):
+        with open (Path('./found_bits/' + os.path.basename(self.path) +  '/' + bit_pattern + 'bits' + 'rotated'+str(rotation)+'combined'+str(combine)+'channel'+str(channel)+'.txt'), "w+") as f:
             f.write(self.bits)
 
     def rotate(self, degrees):
@@ -266,8 +282,8 @@ class HiddenImage(ImageBits):
     Class used to detect and translate nested hidden images
     '''
 
-    def __init__(self, path='./samples/hide_image.png', dimensions=(60, 80), bits=None, bit_pattern=None, combine=None, rotation=0):
-        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation)
+    def __init__(self, path='./samples/hide_image.png', dimensions=(60, 80), bits=None, bit_pattern=None, combine=None, rotation=0, channel=None):
+        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation, channel=channel)
         self.dimensions = dimensions
         self.hidden_img = None
         self.header()
@@ -308,6 +324,7 @@ class HiddenImage(ImageBits):
         binary = self.bits[start:]
         try:
             hidden_img = np.zeros((h, w, 3), dtype=np.uint8)
+
 
             # Initialize loop counters
             counter = 0
@@ -369,8 +386,8 @@ class HiddenImage(ImageBits):
 
 
 class HiddenText(ImageBits):
-    def __init__(self, path='./samples/hide_text.png', dimensions=(32, 4580), bits=None, bit_pattern=None, combine=None, rotation=0):
-        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation)
+    def __init__(self, path='./samples/hide_text.png', dimensions=(32, 4580), bits=None, bit_pattern=None, combine=None, rotation=0, channel=None):
+        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation, channel=channel)
         self.dimensions = dimensions
         self.hidden_text = None
         self.header()
@@ -409,7 +426,7 @@ class HiddenText(ImageBits):
                 text.append(char)
             except:
                 print('Error decoding text')
-                continue
+                break
             counter += 8
 
         text = "".join(text)
