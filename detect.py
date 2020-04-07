@@ -16,6 +16,10 @@ class ImageBits(object):
     '''
     def __init__(self, path, bit_pattern=None, combine=None, bits=None, rotation=0, channel=None):
 
+        '''
+        EDIT THIS SO IT CAN WORK WITH OTHER BIT ENCODINGS (evens,
+        odds, first two, first three, etc...)
+        '''
         if bit_pattern is None:
             bit_pattern = input("Input 'first', 'second', 'third', etc.: ")
         if combine is None:
@@ -26,7 +30,7 @@ class ImageBits(object):
         if rotation != 0:
             self.img = self.rotate(rotation)
         self.height, self.width, _ = self.img.shape
-        self.bitLength = self.height * self.width
+        self.bitlength = self.height * self.width
         count = 0
 
         if bits is not None:
@@ -245,6 +249,7 @@ class ImageBits(object):
     def set_bits(self, bits):
         self.bits = bits
 
+
     def save_bits(self,bit_pattern='first', rotation=0, combine=False, channel='all'):
         with open (Path('./found_bits/' + os.path.basename(self.path) +  '/' + bit_pattern + 'bits' + 'rotated'+str(rotation)+'combined'+str(combine)+'channel'+str(channel)+'.txt'), "w+") as f:
             f.write(self.bits)
@@ -373,6 +378,33 @@ class HiddenImage(ImageBits):
         self.hidden_img = np.array(img)
         self.save()
         return self.hidden_img
+    
+    def stats(self):
+        if self.hidden_img is None:
+            self.find()
+        imgTwo = self.hidden_img
+        binary = self.bits[start:]
+        for r in range(self.height):
+            for c in range(self.width):
+                binaryCheck = first(r, c, bits)
+                if binaryCheck[0] == 1:
+                    imgTwo[r, c, 0] = 255
+                elif binaryCheck[0] == 0:
+                    imgTwo[r, c, 0] = 0
+                if binaryCheck[1] == 1:
+                    imgTwo[r, c, 1] = 255
+                elif binaryCheck[1] == 0:
+                    imgTwo[r, c, 1] = 0
+                if binaryCheck[2] == 1:
+                    imgTwo[r, c, 2] = 255
+                elif binaryCheck[2] == 0:
+                    imgTwo[r, c, 2] = 0
+         img = self.hidden_img
+         self.hidden_img = imgTwo
+         self.save()
+         self.hidden_img = img
+         return True
+        
 
     def save(self):
         if self.hidden_img is None:
