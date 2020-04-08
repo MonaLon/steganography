@@ -242,17 +242,32 @@ class ImageBits(object):
         elif channel is not None:
             for r in range(self.height):
                 for c in range(start, stop, step):
-                    fTup = self.first(r, c, alpha)
-                    sTup = self.second(r, c, alpha)
-                    tTup = self.third(r, c, alpha)
-                    foTup = self.fourth(r, c, alpha)
-                    fiTup = self.fifth(r, c, alpha)
-                    siTup = self.sixth(r, c, alpha)
-                    seTup = self.seventh(r, c, alpha)
-                    eiTup = self.eighth(r, c, alpha)
-
-                    for tup in [fTup, sTup, tTup, foTup, fiTup, siTup, seTup, eiTup]:
-                        bits.append(tup[channel])
+                    if count < self.bitLength:
+                        if (bit_pattern == 'first'):
+                            fTup = self.first(r, c, alpha)
+                            bits.append(fTup[channel])
+                        elif (bit_pattern == 'second'):
+                            sTup = self.second(r, c, alpha)
+                            bits.append(sTup[channel])
+                        elif (bit_pattern == 'third'):
+                            tTup = self.third(r, c, alpha)
+                            bits.append(tTup[channel])
+                        elif (bit_pattern == 'fourth'):
+                            foTup = self.fourth(r, c, alpha)
+                            bits.append(foTup[channel])
+                        elif (bit_pattern == 'fifth'):
+                            fiTup = self.fifth(r, c, alpha)
+                            bits.append(fiTup[channel])
+                        elif (bit_pattern == 'sixth'):
+                            siTup = self.sixth(r, c, alpha)
+                            bits.append(siTup[channel])
+                        elif (bit_pattern == 'seventh'):
+                            seTup = self.seventh(r, c, alpha)
+                            bits.append(seTup[channel])
+                        elif (bit_pattern == 'eighth'):
+                            eiTup = self.eighth(r, c, alpha)
+                            bits.append(eiTup[channel])
+                        count += 1
 
             self.bits = "".join(bits)
         else:
