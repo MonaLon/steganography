@@ -13,3 +13,9 @@ If I ever write a final exam for a security class, the answers are going to be:
 Ehh, I'm not going to write them down. This information probably wouldn't interest anyone.
 
 One who sleeps with a naginata is a fool every night but one.
+
+
+We also found a total of 5 images:
+
+1 in LastBastionOfRadiance.png, 1 in WideDogIsWide.png, and 3 in WinkyFace.png.
+These are all up on our [our GitHub](https://github.com/camilodoa/steganography).
