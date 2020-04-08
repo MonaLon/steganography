@@ -253,7 +253,7 @@ class ImageBits(object):
                     for tup in [fTup, sTup, tTup, foTup, fiTup, siTup, seTup, eiTup]:
                         bits.append(tup[channel])
 
-            self.bits = "".join(bits)           
+            self.bits = "".join(bits)
         else:
             for r in range(self.height):
                 for c in range(start, stop, step):
@@ -420,7 +420,7 @@ class ImageBits(object):
         self.bits = bits
 
     def save_bits(self,bit_pattern='first', rotation=0, combine=False, channel='all', reversed=False, swap=False, diagonal=False):
-        with open (Path('./found_bits/' + os.path.basename(self.path) +  '/' + bit_pattern + 'bits' + 'rotated'+str(rotation)+ 'reversed'+str(reversed)+'swap'+str(swap)+'combined'+str(combine)+'channel'+str(channel)+'diagonal'+str(diagonal)'.txt'), "w+") as f:
+        with open (Path('./found_bits/' + os.path.basename(self.path) +  '/' + bit_pattern + 'bits' + 'rotated'+str(rotation)+ 'reversed'+str(reversed)+'swap'+str(swap)+'combined'+str(combine)+'channel'+str(channel)+'diagonal'+str(diagonal)+'.txt'), "w+") as f:
             f.write(self.bits)
 
     def rotate(self, degrees):
