@@ -55,6 +55,7 @@ class ImageBits(object):
             alpha = True
         else:
             alpha = False
+            self.num_channels = 3
 
         if (combine == 'true') and channel is None:
             for r in range(self.height):

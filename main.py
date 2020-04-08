@@ -19,55 +19,47 @@ def extract_bits():
     for _, dirnames, filenames in os.walk(base_path):
         for image in filenames:
             # Don't do the ones we already have a message for hehe
-            if 'Gadget.png' in image or 'TripleThreat.png' in image or 'PuppyLeash.png' in image or 'Brothers_small.png' in image or 'WideDogIsWide.png' in image or 'PupFriends.png' in image or 'FriendlyPupper.png' in image:
+            if 'Gadget.png' in image or 'TripleThreat.png' in image or 'PuppyLeash.png' in image or 'Brothers_small.png' in image or 'WideDogIsWide.png' in image or 'PupFriends.png' in image or 'FriendlyPupper.png' in image or 'TheGrassIsGreener.png' in image or 'Brothers.png' in image:
                 continue
 
             # Extract only the first bit. Alpha channel is done automatically.
             for type in ['first']:
-                # From Left to Right and Right to Left
-                for reversed in [True, False]:
-                    print('For', image, 'extracting', 'reversed', reversed, 'type', type)
-                    # Get text from HiddenText (combining all 4th bits)
-                    text = HiddenText(base_path / image, bit_pattern=type, combine=False, channel=None, reversed=reversed)
-                    text.save_bits(bit_pattern=type, combine=False, reversed=reversed)
-                # Also read in alpha channel
-                for alpha in [True]:
-                    print('For', image, 'extracting', 'reversed', reversed, 'type', type)
-                    # Get text from HiddenText (combining all 4th bits)
-                    text = HiddenText(base_path / image, bit_pattern=type, combine=False, channel=None, alpha=alpha)
-                    text.save_bits(bit_pattern=type, combine=False, alpha=alpha)
-                # RGB or BGR?
-                for swap in [True]:
-                    print('For', image, 'extracting', 'swap', swap, 'type', type)
-                    # Get text from HiddenText (combining all 4th bits)
-                    text = HiddenText(base_path / image, bit_pattern=type, combine=False, channel=None, swap=swap)
-                    text.save_bits(bit_pattern=type, combine=False, swap=swap)
-
                 # Just diagonal bits or all bits?
-                for diagonal in [True]:
-                    print('For', image, 'extracting', 'diagonal', diagonal, 'type', type)
+                for diagonal in [True, False]:
+                    # Also read in alpha channel
+                    for alpha in [True, False]:
+                        # From Left to Right and Right to Left
+                        for reversed in [True, False]:
+                            # RGB or BGR?
+                            for swap in [True]:
+                                print('For', image, 'extracting', 'swap', swap, 'type', type, 'reversed', reversed, 'alpha', alpha, 'diagonal', diagonal)
+                                # Get text from HiddenText (combining all 4th bits)
+                                text = HiddenText(base_path / image, bit_pattern=type, combine=False, channel=None,  swap=swap, reversed=reversed, alpha=alpha, diagonal=diagonal)
+                                text.save_bits(bit_pattern=type, combine=False, swap=swap, reversed=reversed, alpha=alpha, diagonal=diagonal)
+
+
+            # Combine all bits up including the fourth one
+            for type in ['fourth']:
+                for alpha in [False]:
+                    print('For', image, 'extracting', 'combined' 'type', type)
                     # Get text from HiddenText (combining all 4th bits)
-                    text = HiddenText(base_path / image, bit_pattern=type, combine=False, channel=None, diagonal=diagonal)
-                    text.save_bits(bit_pattern=type, combine=False, diagonal=diagonal)
+                    text = HiddenText(base_path / image, bit_pattern=type, combine='true', alpha=alpha)
+                    text.save_bits(bit_pattern=type, combine='true', alpha=alpha)
 
-
-            # # Combine all bits up including the fourth one
-            # for type in ['fourth']:
-            #     print('For', image, 'extracting', 'combined' 'type', type)
-            #     # Get text from HiddenText (combining all 4th bits)
-            #     text = HiddenText(base_path / image, bit_pattern=type, combine='true', channel=None, reversed=reversed, swap=swap)
-            #     text.save_bits(bit_pattern=type, combine='true')
-            #
-            # # Just each channel
-            # for channel in range(4):
-            #     print('For', image, 'extracting', 'channel', channel)
-            #     # Get text from HiddenText
-            #     try:
-            #         text = HiddenText(base_path / image, bit_pattern='channel', combine=False, channel=channel)
-            #         text.save_bits(bit_pattern='channel', combine=False, channel=channel)
-            #     except:
-            #         print('No alpha channel to extract.')
-            #         pass
+            # Just each channel
+            for channel in range(4):
+                print('For', image, 'extracting', 'channel', channel)
+                # Get text from HiddenText
+                try:
+                    if channel == 3:
+                        text = HiddenText(base_path / image, bit_pattern='channel', combine=False, channel=channel, alpha=True)
+                        text.save_bits(bit_pattern='channel', combine=False, channel=channel, alpha=True)
+                    else:
+                        text = HiddenText(base_path / image, bit_pattern='channel', combine=False, channel=channel)
+                        text.save_bits(bit_pattern='channel', combine=False, channel=channel)
+                except:
+                    print('No alpha channel to extract.')
+                    pass
 
 
 def analyze_all():
@@ -87,7 +79,7 @@ def analyze_all():
                             # Get text
                             text = HiddenText(original_path, bits=bits, bit_pattern='first', combine=False)
                             text_header = text.header(location)
-                            if text_header is not None and text_header < 10000:
+                            if text_header is not None:
                                 text_message = text.find(start=location+32, stop=len(bits))
 
                                 if text_message is not None and len(text_message.strip()) > 5:
@@ -145,6 +137,6 @@ def analyze(name):
 
 if __name__ == '__main__':
     # make_found_dirs()
-    extract_bits()
-    # analyze_all()
+    # extract_bits()
+    analyze_all()
     # analyze('WinkyFace.png')

@@ -20,4 +20,4 @@ Additionally, this class is extended with HiddenImage and HiddenText which use t
 
 An outer level script in `main.py` is used to get all different kinds of bit extractions from all of the images and save them to `/found_bits` and then to analyze them starting at different locations in the bitstring.
 
-We also tried using an English dictionary library to sift through all the characters in each bitstring, but we didn't end up getting very far with that approach. There is a lot of junk in those files.
+We also tried using an English dictionary library to sift through all the characters in each bitstring, but we didn't end up getting very far with that approach. There is a lot of junk in those files. All of our different trials are up on [our GitHub](https://github.com/camilodoa/steganography).
