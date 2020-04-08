@@ -22,18 +22,34 @@ def extract_bits():
             if 'Gadget.png' in image or 'TripleThreat.png' in image or 'PuppyLeash.png' in image or 'Brothers_small.png' in image or 'WideDogIsWide.png' in image or 'PupFriends.png' in image or 'FriendlyPupper.png' in image:
                 continue
 
-            # From Left to Right and Right to Left
-            for reversed in [True, False]:
+            # Extract only the first bit. Alpha channel is done automatically.
+            for type in ['first']:
+                # From Left to Right and Right to Left
+                for reversed in [True, False]:
+                    print('For', image, 'extracting', 'reversed', reversed, 'type', type)
+                    # Get text from HiddenText (combining all 4th bits)
+                    text = HiddenText(base_path / image, bit_pattern=type, combine=False, channel=None, reversed=reversed)
+                    text.save_bits(bit_pattern=type, combine=False, reversed=reversed)
+                # Also read in alpha channel
+                for alpha in [True]:
+                    print('For', image, 'extracting', 'reversed', reversed, 'type', type)
+                    # Get text from HiddenText (combining all 4th bits)
+                    text = HiddenText(base_path / image, bit_pattern=type, combine=False, channel=None, alpha=alpha)
+                    text.save_bits(bit_pattern=type, combine=False, alpha=alpha)
                 # RGB or BGR?
-                for swap in [True, False]:
-                    # Just diagonal bits or all bits?
-                    for diagonal in [True, False]:
-                        # Extract only the first bit. Alpha channel is done automatically.
-                        for type in ['first']:
-                            print('For', image, 'extracting', 'reversed', reversed, 'swap', swap, 'type', type, 'diagonal', diagonal)
-                            # Get text from HiddenText (combining all 4th bits)
-                            text = HiddenText(base_path / image, bit_pattern=type, combine=False, channel=None, reversed=reversed, swap=swap, diagonal=diagonal)
-                            text.save_bits(bit_pattern=type, combine=False, reversed=reversed, swap=swap, diagonal=diagonal)
+                for swap in [True]:
+                    print('For', image, 'extracting', 'swap', swap, 'type', type)
+                    # Get text from HiddenText (combining all 4th bits)
+                    text = HiddenText(base_path / image, bit_pattern=type, combine=False, channel=None, swap=swap)
+                    text.save_bits(bit_pattern=type, combine=False, swap=swap)
+
+                # Just diagonal bits or all bits?
+                for diagonal in [True]:
+                    print('For', image, 'extracting', 'diagonal', diagonal, 'type', type)
+                    # Get text from HiddenText (combining all 4th bits)
+                    text = HiddenText(base_path / image, bit_pattern=type, combine=False, channel=None, diagonal=diagonal)
+                    text.save_bits(bit_pattern=type, combine=False, diagonal=diagonal)
+
 
             # # Combine all bits up including the fourth one
             # for type in ['fourth']:
@@ -58,6 +74,9 @@ def analyze_all():
     base = Path('./found_bits')
     for _, dirnames, filenames in os.walk(base):
         for directory in dirnames:
+            # Don't do the ones we already have a message for hehe
+            if 'Gadget.png' in directory or 'TripleThreat.png' in directory or 'PuppyLeash.png' in directory or 'Brothers_small.png' in directory or 'WideDogIsWide.png' in directory or 'PupFriends.png' in directory or 'FriendlyPupper.png' in directory:
+                continue
             for _, dirnames, filenames in os.walk(base / directory):
                 for file in filenames:
                     with open (base / directory / file) as f:

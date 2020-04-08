@@ -14,7 +14,7 @@ class ImageBits(object):
     '''
     Class used to extract bits from an Image
     '''
-    def __init__(self, path, bit_pattern=None, combine=None, bits=None, rotation=0, channel=None, swap=False, reversed=False, diagonal=False):
+    def __init__(self, path, bit_pattern=None, combine=None, bits=None, rotation=0, channel=None, swap=False, reversed=False, diagonal=False, alpha=False):
 
         '''
         EDIT THIS SO IT CAN WORK WITH OTHER BIT ENCODINGS (evens,
@@ -50,11 +50,11 @@ class ImageBits(object):
             stop = -1
             step = -1
 
-        alpha = False
 
-        if self.num_channels == 4:
-            print("Alpha channel detected")
+        if self.num_channels == 4 and alpha:
             alpha = True
+        else:
+            alpha = False
 
         if (combine == 'true') and channel is None:
             for r in range(self.height):
@@ -419,8 +419,8 @@ class ImageBits(object):
     def set_bits(self, bits):
         self.bits = bits
 
-    def save_bits(self,bit_pattern='first', rotation=0, combine=False, channel='all', reversed=False, swap=False, diagonal=False):
-        with open (Path('./found_bits/' + os.path.basename(self.path) +  '/' + bit_pattern + 'bits' + 'rotated'+str(rotation)+ 'reversed'+str(reversed)+'swap'+str(swap)+'combined'+str(combine)+'channel'+str(channel)+'diagonal'+str(diagonal)+'.txt'), "w+") as f:
+    def save_bits(self,bit_pattern='first', rotation=0, combine=False, channel='all', reversed=False, swap=False, diagonal=False, alpha=False):
+        with open (Path('./found_bits/' + os.path.basename(self.path) +  '/' + bit_pattern + 'bits' + 'rotated'+str(rotation)+ 'reversed'+str(reversed)+'swap'+str(swap)+'combined'+str(combine)+'channel'+str(channel)+'diagonal'+str(diagonal)+'alpha'+str(alpha)+'.txt'), "w+") as f:
             f.write(self.bits)
 
     def rotate(self, degrees):
@@ -456,8 +456,8 @@ class HiddenImage(ImageBits):
     Class used to detect and translate nested hidden images
     '''
 
-    def __init__(self, path='./samples/hide_image.png', dimensions=(60, 80), bits=None, bit_pattern=None, combine=None, rotation=0, channel=None, reversed=False, swap=False, diagonal=False):
-        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation, channel=channel, reversed=reversed, swap=swap, diagonal=diagonal)
+    def __init__(self, path='./samples/hide_image.png', dimensions=(60, 80), bits=None, bit_pattern=None, combine=None, rotation=0, channel=None, reversed=False, swap=False, diagonal=False, alpha=False):
+        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation, channel=channel, reversed=reversed, swap=swap, diagonal=diagonal, alpha=alpha)
         self.dimensions = dimensions
         self.hidden_img = None
         self.header()
@@ -587,8 +587,8 @@ class HiddenImage(ImageBits):
 
 
 class HiddenText(ImageBits):
-    def __init__(self, path='./samples/hide_text.png', dimensions=(32, 4580), bits=None, bit_pattern=None, combine=None, rotation=0, channel=None, reversed=False, swap=False, diagonal=False):
-        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation, channel=channel, reversed=reversed, swap=swap, diagonal=diagonal)
+    def __init__(self, path='./samples/hide_text.png', dimensions=(32, 4580), bits=None, bit_pattern=None, combine=None, rotation=0, channel=None, reversed=False, swap=False, diagonal=False, alpha=False):
+        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation, channel=channel, reversed=reversed, swap=swap, diagonal=diagonal, alpha=alpha)
         self.dimensions = dimensions
         self.hidden_text = None
         self.header()
