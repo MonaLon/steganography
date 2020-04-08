@@ -435,7 +435,7 @@ class HiddenImage(ImageBits):
     '''
 
     def __init__(self, path='./samples/hide_image.png', dimensions=(60, 80), bits=None, bit_pattern=None, combine=None, rotation=0, channel=None, reversed=False, swap=False, diagonal=False):
-        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation, channel=channel, reversed=reversed, swap=swap)
+        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation, channel=channel, reversed=reversed, swap=swap, diagonal=diagonal)
         self.dimensions = dimensions
         self.hidden_img = None
         self.header()
@@ -566,7 +566,7 @@ class HiddenImage(ImageBits):
 
 class HiddenText(ImageBits):
     def __init__(self, path='./samples/hide_text.png', dimensions=(32, 4580), bits=None, bit_pattern=None, combine=None, rotation=0, channel=None, reversed=False, swap=False, diagonal=False):
-        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation, channel=channel, reversed=reversed, swap=swap)
+        super().__init__(path, bits=bits, bit_pattern=bit_pattern, combine=combine, rotation=rotation, channel=channel, reversed=reversed, swap=swap, diagonal=diagonal)
         self.dimensions = dimensions
         self.hidden_text = None
         self.header()
