@@ -25,11 +25,11 @@ def extract_bits():
                 # No rotation
                 for rotation in [0]:
                     # Get a bit for each channel
-                    for channel in range(3):
-                        print('For', image, 'extracting', 'reversed', reversed, 'rotation', rotation, 'channel', channel)
-                        # Get text from HiddenText
-                        text = HiddenText(base_path / image, bit_pattern='channel', combine=False, rotation=rotation, channel=channel, reversed=reversed)
-                        text.save_bits(bit_pattern='channel', rotation=rotation, combine=False, channel=channel, reversed=reversed)
+                    # for channel in range(3):
+                    #     print('For', image, 'extracting', 'reversed', reversed, 'rotation', rotation, 'channel', channel)
+                    #     # Get text from HiddenText
+                    #     text = HiddenText(base_path / image, bit_pattern='channel', combine=False, rotation=rotation, channel=channel, reversed=reversed)
+                    #     text.save_bits(bit_pattern='channel', rotation=rotation, combine=False, channel=channel, reversed=reversed)
                     # RGB or BGR?
                     for swap in [True, False]:
                         # Combine all bits up including the fourth one
@@ -119,6 +119,6 @@ def analyze(name):
 
 if __name__ == '__main__':
     # make_found_dirs()
-    # extract_bits()
-    analyze_all()
+    extract_bits()
+    # analyze_all()
     # analyze('WinkyFace.png')

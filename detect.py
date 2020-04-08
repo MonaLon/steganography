@@ -29,7 +29,7 @@ class ImageBits(object):
         self.img = imageio.imread(path)
         if rotation != 0:
             self.img = self.rotate(rotation)
-        self.height, self.width, _ = self.img.shape
+        self.height, self.width, self.num_channels = self.img.shape
         self.bitLength = self.height * self.width
         count = 0
 
@@ -50,34 +50,40 @@ class ImageBits(object):
             stop = -1
             step = -1
 
+        alpha = False
+
+        if self.num_channels == 4:
+            print("Alpha channel detected")
+            alpha = True
+
         if (combine == 'true') and channel is None:
             for r in range(self.height):
                 for c in range(start, stop, step):
                     if count < self.bitLength:
                         if (bit_pattern == 'first'):
-                            fTup = self.first(r, c)
+                            fTup = self.first(r, c, alpha)
                             if swap:
                                 fTup = list(fTup)
                                 fTup.reverse()
                             for var in fTup:
                                 bits.append(var)
                         if (bit_pattern == 'second'):
-                            sTup = self.second(r, c)
-                            fTup = self.first(r, c)
+                            sTup = self.second(r, c, alpha)
+                            fTup = self.first(r, c, alpha)
                             if swap:
                                 fTup = list(fTup)
                                 fTup.reverse()
                                 sTup = list(sTup)
                                 sTup.reverse()
                             i = 0
-                            while i < 3:
+                            while i < self.num_channels:
                                 bits.append(fTup[i])
                                 bits.append(sTup[i])
                                 i += 1
                         if (bit_pattern == 'third'):
-                            tTup = self.third(r, c)
-                            sTup = self.second(r, c)
-                            fTup = self.first(r, c)
+                            tTup = self.third(r, c, alpha)
+                            sTup = self.second(r, c, alpha)
+                            fTup = self.first(r, c, alpha)
                             if swap:
                                 fTup = list(fTup)
                                 fTup.reverse()
@@ -86,16 +92,16 @@ class ImageBits(object):
                                 tTup = list(tTup)
                                 tTup.reverse()
                             i = 0
-                            while i < 3:
+                            while i < self.num_channels:
                                 bits.append(fTup[i])
                                 bits.append(sTup[i])
                                 bits.append(tTup[i])
                                 i += 1
                         if (bit_pattern == 'fourth'):
-                            foTup = self.fourth(r, c)
-                            tTup = self.third(r, c)
-                            sTup = self.second(r, c)
-                            fTup = self.first(r, c)
+                            foTup = self.fourth(r, c, alpha)
+                            tTup = self.third(r, c, alpha)
+                            sTup = self.second(r, c, alpha)
+                            fTup = self.first(r, c, alpha)
                             if swap:
                                 fTup = list(fTup)
                                 fTup.reverse()
@@ -106,18 +112,18 @@ class ImageBits(object):
                                 foTup = list(foTup)
                                 foTup.reverse()
                             i = 0
-                            while i < 3:
+                            while i < self.num_channels:
                                 bits.append(fTup[i])
                                 bits.append(sTup[i])
                                 bits.append(tTup[i])
                                 bits.append(foTup[i])
                                 i += 1
                         if (bit_pattern == 'fifth'):
-                            fiTup = self.fifth(r, c)
-                            foTup = self.fourth(r, c)
-                            tTup = self.third(r, c)
-                            sTup = self.second(r, c)
-                            fTup = self.first(r, c)
+                            fiTup = self.fifth(r, c, alpha)
+                            foTup = self.fourth(r, c, alpha)
+                            tTup = self.third(r, c, alpha)
+                            sTup = self.second(r, c, alpha)
+                            fTup = self.first(r, c, alpha)
                             if swap:
                                 fTup = list(fTup)
                                 fTup.reverse()
@@ -130,7 +136,7 @@ class ImageBits(object):
                                 fiTup = list(fiTup)
                                 fiTup.reverse()
                             i = 0
-                            while i < 3:
+                            while i < self.num_channels:
                                 bits.append(fTup[i])
                                 bits.append(sTup[i])
                                 bits.append(tTup[i])
@@ -138,12 +144,12 @@ class ImageBits(object):
                                 bits.append(fiTup[i])
                                 i += 1
                         if (bit_pattern == 'sixth'):
-                            siTup = self.sixth(r, c)
-                            fiTup = self.fifth(r, c)
-                            foTup = self.fourth(r, c)
-                            tTup = self.third(r, c)
-                            sTup = self.second(r, c)
-                            fTup = self.first(r, c)
+                            siTup = self.sixth(r, c, alpha)
+                            fiTup = self.fifth(r, c, alpha)
+                            foTup = self.fourth(r, c, alpha)
+                            tTup = self.third(r, c, alpha)
+                            sTup = self.second(r, c, alpha)
+                            fTup = self.first(r, c, alpha)
                             if swap:
                                 fTup = list(fTup)
                                 fTup.reverse()
@@ -156,7 +162,7 @@ class ImageBits(object):
                                 siTup = list(siTup)
                                 siTup.reverse()
                             i = 0
-                            while i < 3:
+                            while i < self.num_channels:
                                 bits.append(fTup[i])
                                 bits.append(sTup[i])
                                 bits.append(tTup[i])
@@ -165,13 +171,13 @@ class ImageBits(object):
                                 bits.append(siTup[i])
                                 i += 1
                         if (bit_pattern == 'seventh'):
-                            seTup = self.seventh(r, c)
-                            siTup = self.sixth(r, c)
-                            fiTup = self.fifth(r, c)
-                            foTup = self.fourth(r, c)
-                            tTup = self.third(r, c)
-                            sTup = self.second(r, c)
-                            fTup = self.first(r, c)
+                            seTup = self.seventh(r, c, alpha)
+                            siTup = self.sixth(r, c, alpha)
+                            fiTup = self.fifth(r, c, alpha)
+                            foTup = self.fourth(r, c, alpha)
+                            tTup = self.third(r, c, alpha)
+                            sTup = self.second(r, c, alpha)
+                            fTup = self.first(r, c, alpha)
                             if swap:
                                 fTup = list(fTup)
                                 fTup.reverse()
@@ -186,7 +192,7 @@ class ImageBits(object):
                                 seTup = list(seTup)
                                 seTup.reverse()
                             i = 0
-                            while i < 3:
+                            while i < self.num_channels:
                                 bits.append(fTup[i])
                                 bits.append(sTup[i])
                                 bits.append(tTup[i])
@@ -196,14 +202,14 @@ class ImageBits(object):
                                 bits.append(seTup[i])
                                 i += 1
                         if (bit_pattern == 'eighth'):
-                            eiTup = self.eighth(r, c)
-                            seTup = self.seventh(r, c)
-                            siTup = self.sixth(r, c)
-                            fiTup = self.fifth(r, c)
-                            foTup = self.fourth(r, c)
-                            tTup = self.third(r, c)
-                            sTup = self.second(r, c)
-                            fTup = self.first(r, c)
+                            eiTup = self.eighth(r, c, alpha)
+                            seTup = self.seventh(r, c, alpha)
+                            siTup = self.sixth(r, c, alpha)
+                            fiTup = self.fifth(r, c, alpha)
+                            foTup = self.fourth(r, c, alpha)
+                            tTup = self.third(r, c, alpha)
+                            sTup = self.second(r, c, alpha)
+                            fTup = self.first(r, c, alpha)
                             if swap:
                                 fTup = list(fTup)
                                 fTup.reverse()
@@ -220,7 +226,7 @@ class ImageBits(object):
                                 eiTup = list(eiTup)
                                 eiTup.reverse()
                             i = 0
-                            while i < 3:
+                            while i < self.num_channels:
                                 bits.append(fTup[i])
                                 bits.append(sTup[i])
                                 bits.append(tTup[i])
@@ -235,14 +241,14 @@ class ImageBits(object):
         elif channel is not None:
             for r in range(self.height):
                 for c in range(start, stop, step):
-                    fTup = self.first(r, c)
-                    sTup = self.second(r, c)
-                    tTup = self.third(r, c)
-                    foTup = self.fourth(r, c)
-                    fiTup = self.fifth(r, c)
-                    siTup = self.sixth(r, c)
-                    seTup = self.seventh(r, c)
-                    eiTup = self.eighth(r, c)
+                    fTup = self.first(r, c, alpha)
+                    sTup = self.second(r, c, alpha)
+                    tTup = self.third(r, c, alpha)
+                    foTup = self.fourth(r, c, alpha)
+                    fiTup = self.fifth(r, c, alpha)
+                    siTup = self.sixth(r, c, alpha)
+                    seTup = self.seventh(r, c, alpha)
+                    eiTup = self.eighth(r, c, alpha)
 
                     for tup in [fTup, sTup, tTup, foTup, fiTup, siTup, seTup, eiTup]:
                         bits.append(tup[channel])
@@ -253,56 +259,56 @@ class ImageBits(object):
                 for c in range(start, stop, step):
                     if count < self.bitLength:
                         if (bit_pattern == 'first'):
-                            fTup = self.first(r, c)
+                            fTup = self.first(r, c, alpha)
                             if swap:
                                 fTup = list(fTup)
                                 fTup.reverse()
                             for var in fTup:
                                 bits.append(var)
                         elif (bit_pattern == 'second'):
-                            sTup = self.second(r, c)
+                            sTup = self.second(r, c, alpha)
                             if swap:
                                 sTup = list(sTup)
                                 sTup.reverse()
                             for var in sTup:
                                 bits.append(var)
                         elif (bit_pattern == 'third'):
-                            tTup = self.third(r, c)
+                            tTup = self.third(r, c, alpha)
                             if swap:
                                 tTup = list(tTup)
                                 tTup.reverse()
                             for var in tTup:
                                 bits.append(var)
                         elif (bit_pattern == 'fourth'):
-                            foTup = self.fourth(r, c)
+                            foTup = self.fourth(r, c, alpha)
                             if swap:
                                 foTup = list(foTup)
                                 foTup.reverse()
                             for var in foTup:
                                 bits.append(var)
                         elif (bit_pattern == 'fifth'):
-                            fiTup = self.fifth(r, c)
+                            fiTup = self.fifth(r, c, alpha)
                             if swap:
                                 fiTup = list(fiTup)
                                 fiTup.reverse()
                             for var in fiTup:
                                 bits.append(var)
                         elif (bit_pattern == 'sixth'):
-                            siTup = self.sixth(r, c)
+                            siTup = self.sixth(r, c, alpha)
                             if swap:
                                 siTup = list(siTup)
                                 siTup.reverse()
                             for var in siTup:
                                 bits.append(var)
                         elif (bit_pattern == 'seventh'):
-                            seTup = self.seventh(r, c)
+                            seTup = self.seventh(r, c, alpha)
                             if swap:
                                 seTup = list(seTup)
                                 seTup.reverse()
                             for var in seTup:
                                 bits.append(var)
                         elif (bit_pattern == 'eighth'):
-                            eiTup = self.eighth(r, c)
+                            eiTup = self.eighth(r, c, alpha)
                             if swap:
                                 eiTup = list(eiTup)
                                 eiTup.reverse()
@@ -313,35 +319,51 @@ class ImageBits(object):
             self.bits = "".join(bits)
 
 
-    def first(self, r, c):
+    def first(self, r, c, alpha=False):
+        if alpha:
+            return (str(self.img[r,c,0] & 1), str(self.img[r,c,1] & 1), str(self.img[r,c,2] & 1), str(self.img[r,c,3] & 1))
         firstTup = (str(self.img[r,c,0] & 1), str(self.img[r,c,1] & 1), str(self.img[r,c,2] & 1))
         return firstTup
 
-    def second(self, r, c):
+    def second(self, r, c, alpha=False):
+        if alpha:
+            return (str((self.img[r,c,0] & 2) >> 1), str((self.img[r,c,1] & 2) >> 1), str((self.img[r,c,2] & 2) >> 1),str((self.img[r,c,3] & 2) >> 1))
         secondTup = (str((self.img[r,c,0] & 2) >> 1), str((self.img[r,c,1] & 2) >> 1), str((self.img[r,c,2] & 2) >> 1))
         return secondTup
 
-    def third(self, r, c):
+    def third(self, r, c, alpha=False):
+        if alpha:
+            return (str((self.img[r,c,0] & 4) >> 2), str((self.img[r,c,1] & 4) >> 2), str((self.img[r,c,2] & 4) >> 2), str((self.img[r,c,3] & 4) >> 2))
         thirdTup = (str((self.img[r,c,0] & 4) >> 2), str((self.img[r,c,1] & 4) >> 2), str((self.img[r,c,2] & 4) >> 2))
         return thirdTup
 
-    def fourth(self,  r, c):
+    def fourth(self,  r, c, alpha=False):
+        if alpha:
+            return (str((self.img[r,c,0] & 8) >> 3), str((self.img[r,c,1] & 8) >> 3), str((self.img[r,c,2] & 8) >> 3), str((self.img[r,c,3] & 8) >> 3))
         fourthTup = (str((self.img[r,c,0] & 8) >> 3), str((self.img[r,c,1] & 8) >> 3), str((self.img[r,c,2] & 8) >> 3))
         return fourthTup
 
-    def fifth(self, r, c):
+    def fifth(self, r, c, alpha=False):
+        if alpha:
+            return (str((self.img[r,c,0] & 16) >> 4), str((self.img[r,c,1] & 16) >> 4), str((self.img[r,c,2] & 16) >> 4), str((self.img[r,c,3] & 16) >> 4))
         fifthTup = (str((self.img[r,c,0] & 16) >> 4), str((self.img[r,c,1] & 16) >> 4), str((self.img[r,c,2] & 16) >> 4))
         return fifthTup
 
-    def sixth(self, r, c):
+    def sixth(self, r, c, alpha=False):
+        if alpha:
+            return (str((self.img[r,c,0] & 32) >> 5), str((self.img[r,c,1] & 32) >> 5), str((self.img[r,c,2] & 32) >> 5), str((self.img[r,c,3] & 32) >> 5))
         sixthTup = (str((self.img[r,c,0] & 32) >> 5), str((self.img[r,c,1] & 32) >> 5), str((self.img[r,c,2] & 32) >> 5))
         return sixthTup
 
-    def seventh(self, r, c):
+    def seventh(self, r, c, alpha=False):
+        if alpha:
+            return (str((self.img[r,c,0] & 64) >> 6), str((self.img[r,c,1] & 64) >> 6), str((self.img[r,c,2] & 64) >> 6),str((self.img[r,c,3] & 64) >> 6))
         seventhTup = (str((self.img[r,c,0] & 64) >> 6), str((self.img[r,c,1] & 64) >> 6), str((self.img[r,c,2] & 64) >> 6))
         return seventhTup
 
-    def eighth(self, r, c):
+    def eighth(self, r, c, alpha=False):
+        if alpha:
+            return (str((self.img[r,c,0] & 128) >> 7), str((self.img[r,c,1] & 128) >> 7), str((self.img[r,c,2] & 128) >> 7), str((self.img[r,c,3] & 128) >> 7))
         eighthTup = (str((self.img[r,c,0] & 128) >> 7), str((self.img[r,c,1] & 128) >> 7), str((self.img[r,c,2] & 128) >> 7))
         return eighthTup
 
