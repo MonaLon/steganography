@@ -1,3 +1,5 @@
+Team:
+<cortiz20@amherst.edu and kheywardrotimi20@amherst.edu>
 Resources used:
   <Talked to Brandt Dudziak and Caroline Shim>
 On a scale from -2 to 2:
