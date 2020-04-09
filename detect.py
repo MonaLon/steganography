@@ -496,7 +496,7 @@ class HiddenImage(ImageBits):
             "There was an error in reading in the dimensions"
         return self.dimensions
 
-    def find(self, start=64, w=None, h=None, first=0, second=32):
+    def find(self, start=64, w=None, h=None, first=0, second=32, alpha=False):
         '''
         Convets a bytestring to an image and saves it to <path>.
         Use dimensions to extract the image
@@ -513,7 +513,10 @@ class HiddenImage(ImageBits):
         # Start our search after the header
         binary = self.bits[start:]
         try:
-            hidden_img = np.zeros((h, w, 3), dtype=np.uint8)
+            num_channels = 3
+            if alpha:
+                num_channels = 4
+            hidden_img = np.zeros((h, w, num_channels), dtype=np.uint8)
 
 
             # Initialize loop counters
@@ -534,10 +537,16 @@ class HiddenImage(ImageBits):
                     third_c = binary[counter:counter+8]
                     counter += 8
 
+                    if alpha:
+                        fourth_c = binary[counter:counter+8]
+                        counter += 8
+
                     # First 8 bits for the first color channel
                     hidden_img[c, r, 0] = self.get_int(first_c)
                     hidden_img[c, r, 1] = self.get_int(second_c)
                     hidden_img[c, r, 2] = self.get_int(third_c)
+                    if alpha:
+                        hidden_img[c, r, 3] = self.get_int(fourth_c)
 
                     pixels += 1
 
@@ -595,7 +604,7 @@ class HiddenImage(ImageBits):
         if self.hidden_img is None:
             self.find()
         try:
-            imageio.imwrite(Path('./found_images/'+ os.path.basename(self.path) + '/' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.jpg'), self.hidden_img)
+            imageio.imwrite(Path('./found_images/'+ os.path.basename(self.path) + '/' + datetime.now().strftime("%m:%d:%Y:%H:%M:%S") +'.png'), self.hidden_img)
         except:
             print("Error. Saving image was not possible.")
             return False
