@@ -7,4 +7,6 @@ On a scale from -2 to 2:
   <-2>
   How much did you enjoy the assignment?
   <-2>
-Additional notes: <The assignment was too involved for the amount of time we were given.>
+Additional notes: <The assignment was too involved for the amount of time we were given.
+Also, the structure of this assignment builds on itself. If students make a mistake
+early on they get punished because they have to change all their work>
