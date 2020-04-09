@@ -15,7 +15,6 @@ Ehh, I'm not going to write them down. This information probably wouldn't intere
 One who sleeps with a naginata is a fool every night but one.
 
 
-We also found a total of 5 images:
-
-1 in LastBastionOfRadiance.png, 1 in WideDogIsWide.png, and 3 in WinkyFace.png.
-These are all up on our [our GitHub](https://github.com/camilodoa/steganography).
+We also found a total of 3 different images:
+1 in LastBastionOfRadiance.png, 1 in WideDogIsWide.png, and 1 in WinkyFace.png.
+These are all up on our [our GitHub](https://github.com/camilodoa/steganography). We searched them for messages but couldn't find any.
